@@ -48,6 +48,7 @@ l3__st_test\deal_data.o: ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_dma_e
 l3__st_test\deal_data.o: ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_mdma.h
 l3__st_test\deal_data.o: ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_exti.h
 l3__st_test\deal_data.o: ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_cortex.h
+l3__st_test\deal_data.o: ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_fdcan.h
 l3__st_test\deal_data.o: ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_flash.h
 l3__st_test\deal_data.o: ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_flash_ex.h
 l3__st_test\deal_data.o: ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_hsem.h

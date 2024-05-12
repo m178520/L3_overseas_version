@@ -25,6 +25,7 @@ l3__st_test\main.o: ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_dma_ex.h
 l3__st_test\main.o: ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_mdma.h
 l3__st_test\main.o: ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_exti.h
 l3__st_test\main.o: ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_cortex.h
+l3__st_test\main.o: ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_fdcan.h
 l3__st_test\main.o: ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_flash.h
 l3__st_test\main.o: ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_flash_ex.h
 l3__st_test\main.o: ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_hsem.h
@@ -56,6 +57,7 @@ l3__st_test\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
 l3__st_test\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
 l3__st_test\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
 l3__st_test\main.o: ../Core/Inc/dma.h
+l3__st_test\main.o: ../Core/Inc/fdcan.h
 l3__st_test\main.o: ../Core/Inc/spi.h
 l3__st_test\main.o: ../Core/Inc/tim.h
 l3__st_test\main.o: ../Core/Inc/usart.h
