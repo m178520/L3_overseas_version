@@ -1,0 +1,12 @@
+#ifndef _RTK_L1_H
+#define _RTK_L1_H
+
+#include "deal_string.h"
+
+void RTK_L1_open(char * Name,char *fun,char * source);
+void RTK_L1_Mode(char * Name,char *fun,char * source);
+void RTK_L1_Source(char * Name,char *fun,char * source);
+
+#endif
+
+
