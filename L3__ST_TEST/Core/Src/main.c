@@ -20,6 +20,7 @@
 #include "main.h"
 #include "cmsis_os.h"
 #include "dma.h"
+#include "fdcan.h"
 #include "spi.h"
 #include "tim.h"
 #include "usart.h"
@@ -128,6 +129,8 @@ int main(void)
   MX_TIM6_Init();
   MX_USART1_UART_Init();
   MX_SPI1_Init();
+  MX_FDCAN1_Init();
+  MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
 	printf("此版本为RTK_L3测试\r\n");
 	printf("目前进行到开机RTK_L1开机测试\r\n");

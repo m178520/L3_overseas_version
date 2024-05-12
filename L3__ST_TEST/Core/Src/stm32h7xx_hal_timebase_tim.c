@@ -30,7 +30,7 @@
 TIM_HandleTypeDef        htim7;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
-#if 0
+
 /**
   * @brief  This function configures the TIM7 as a time base source.
   *         The time source is configured  to have 1ms time base with a dedicated
@@ -131,29 +131,3 @@ void HAL_ResumeTick(void)
   __HAL_TIM_ENABLE_IT(&htim7, TIM_IT_UPDATE);
 }
 
-#else
-HAL_StatusTypeDef HAL_InitTick (uint32_t TickPriority)
-{
-        return HAL_OK;
-}
-
-uint32_t HAL_GetTick (void)
-{
-        static uint32_t ticks = 0U;
-        uint32_t i;
-
-        if (osKernelGetState() == osKernelRunning)
-        {
-                return ((uint32_t)osKernelGetTickCount());
-        }
-
-        /* 如果ThreadX还没有运行，采用下面方式 */
-        for (i = (SystemCoreClock >> 14U); i > 0U; i--)
-        {
-                __NOP(); __NOP(); __NOP(); __NOP(); __NOP(); __NOP();
-                __NOP(); __NOP(); __NOP(); __NOP(); __NOP(); __NOP();
-        }
-       
-        return ++ticks;
-}
-#endif

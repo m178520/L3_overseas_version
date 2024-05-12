@@ -36,6 +36,8 @@ extern UART_HandleTypeDef huart1;
 
 extern UART_HandleTypeDef huart2;
 
+extern UART_HandleTypeDef huart3;
+
 /* USER CODE BEGIN Private defines */
 #define USART2_Max_Rxnum_size 15
 #define USART2_Max_Txnum_size 15
@@ -56,6 +58,7 @@ extern uint8_t USART1TxData[USART1_Max_Txnum_size][USART1_Max_Txbuf_size];
 
 void MX_USART1_UART_Init(void);
 void MX_USART2_UART_Init(void);
+void MX_USART3_UART_Init(void);
 
 /* USER CODE BEGIN Prototypes */
 /* 串口设备结构体 */
