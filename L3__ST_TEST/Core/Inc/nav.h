@@ -41,6 +41,11 @@ typedef struct
 	double value;
 }tracking_control_t;
 
+typedef struct
+{
+	double LSpeed;
+	double RSpeed;
+}NAV_output_t;
 
 #if CONTROL_WAY == 0
 typedef struct
@@ -70,6 +75,6 @@ typedef struct
 
 void waypoints_Parse(char *string,char * str);
 pointToline_distance_t pointToline_distance(double Vehicle_lat,double Vehicle_lon,double start_lat, double start_lon, double stop_lat, double stop_lon); //ต๗สิสนำร
-double NAV_Control(void);
+NAV_output_t NAV_Control(void);
 
 #endif

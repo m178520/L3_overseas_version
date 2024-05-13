@@ -54,6 +54,11 @@ extern uint8_t USART2TxData[USART2_Max_Txnum_size][USART2_Max_Txbuf_size];
 
 extern uint8_t USART1RxData[USART1_Max_Rxnum_size][USART1_Max_Rxbuf_size];
 extern uint8_t USART1TxData[USART1_Max_Txnum_size][USART1_Max_Txbuf_size];
+
+#define USART3_Max_Rxbuf_size 100
+
+extern uint8_t USART3RxData[USART3_Max_Rxbuf_size];
+
 /* USER CODE END Private defines */
 
 void MX_USART1_UART_Init(void);
@@ -77,6 +82,7 @@ typedef struct
 
 extern UART_fifo_t UART1_fifo;
 extern UART_fifo_t UART2_fifo;
+extern UART_fifo_t UART3_fifo;
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

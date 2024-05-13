@@ -29,7 +29,10 @@
 #include "spi.h"
 #include "deal_data.h"
 #include "nav.h"
+#include "sbus.h"
+#include "motor.h"
 #include "WGS84ToAngle.h"
+
 
 extern TIM_HandleTypeDef htim6;
 /* USER CODE END Includes */
@@ -171,6 +174,13 @@ const osThreadAttr_t VCU_REC_attributes = {
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
+/* Definitions for SBUS_Parse */
+osThreadId_t SBUS_ParseHandle;
+const osThreadAttr_t SBUS_Parse_attributes = {
+  .name = "SBUS_Parse",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityLow,
+};
 /* Definitions for usart2_send_semp_queue */
 osMessageQueueId_t usart2_send_semp_queueHandle;
 const osMessageQueueAttr_t usart2_send_semp_queue_attributes = {
@@ -206,6 +216,11 @@ osSemaphoreId_t APP_Info_Submit_SempHandle;
 const osSemaphoreAttr_t APP_Info_Submit_Semp_attributes = {
   .name = "APP_Info_Submit_Semp"
 };
+/* Definitions for SBUS_Parse_semp */
+osSemaphoreId_t SBUS_Parse_sempHandle;
+const osSemaphoreAttr_t SBUS_Parse_semp_attributes = {
+  .name = "SBUS_Parse_semp"
+};
 /* Definitions for Device_Run_status_event */
 osEventFlagsId_t Device_Run_status_eventHandle;
 const osEventFlagsAttr_t Device_Run_status_event_attributes = {
@@ -233,6 +248,7 @@ void Power_Check_task(void *argument);
 void GPS_REC_task(void *argument);
 void VCU_send_task(void *argument);
 void VCU_REC_task(void *argument);
+void SBUS_Parse_task(void *argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -253,6 +269,9 @@ void MX_FREERTOS_Init(void) {
   /* Create the semaphores(s) */
   /* creation of APP_Info_Submit_Semp */
   APP_Info_Submit_SempHandle = osSemaphoreNew(1, 0, &APP_Info_Submit_Semp_attributes);
+
+  /* creation of SBUS_Parse_semp */
+  SBUS_Parse_sempHandle = osSemaphoreNew(100, 100, &SBUS_Parse_semp_attributes);
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
   /* add semaphores, ... */
@@ -318,6 +337,9 @@ void MX_FREERTOS_Init(void) {
 
   /* creation of VCU_REC */
   VCU_RECHandle = osThreadNew(VCU_REC_task, NULL, &VCU_REC_attributes);
+
+  /* creation of SBUS_Parse */
+  SBUS_ParseHandle = osThreadNew(SBUS_Parse_task, NULL, &SBUS_Parse_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -480,27 +502,34 @@ void Device_Run_task(void *argument)
 {
   /* USER CODE BEGIN Device_Run_task */
 	uint32_t uxBits;
+	NAV_output_t NAV_output = {0};
   /* Infinite loop */
   for(;;)
   {
-		uxBits = osEventFlagsWait(Device_Run_status_eventHandle,  BIT_1 | BIT_3 |BIT_4 | BIT_23,osFlagsWaitAll | osFlagsNoClear, portMAX_DELAY); //还有bit0暂时先不加入BIT_0 |
+		if(controlFlag == NALCont)
+		{	
+			uxBits = osEventFlagsWait(Device_Run_status_eventHandle,  BIT_1 | BIT_3 |BIT_4 | BIT_23,osFlagsWaitAll | osFlagsNoClear, 1000); //还有bit0暂时先不加入BIT_0 |  等待1s（暂时）打印不满足的条件，如果转换了sbus控制就转换模式
 		
-		if( (uxBits & ( BIT_1 | BIT_3 | BIT_4 | BIT_23))  == ( BIT_1 | BIT_3 | BIT_4 | BIT_23)) //是否满足启动的条件
-		{
-			if(Device_Run_Status.Curstatus == Job_Working)                                                      //是否完成了可工作的准备
+			if( (uxBits & ( BIT_1 | BIT_3 | BIT_4 | BIT_23))  == ( BIT_1 | BIT_3 | BIT_4 | BIT_23)) //是否满足启动的条件
 			{
-				/*说明未完成本次航线*/
-				if(NAV_Control() < 1)
+				if(Device_Run_Status.Curstatus == Job_Working)                                                      //是否完成了可工作的准备
 				{
-					/*给信息上报全局变量赋值*/
+					NAV_output = NAV_Control();
+					Direct_Drive_motor(NAV_output.RSpeed,NAV_output.LSpeed);
+					HAL_GPIO_TogglePin(GPIOB,GPIO_PIN_0);	
 				}
-				/*完成此次航线进行下一个航线的获取*/
-				else
-				{
-					/*给信息上报全局变量赋值*/
-				}
+			}
+			else //长时间不满足条件
+			{
+				printf("自动导航条件不满足");
+			}
+		}
+		else if(controlFlag == sbusCont)
+		{
+			if(SBUS_CH.Start == 1) //说明连接了sbus
+			{
+				Direct_Drive_motor(SBUS_CH.RSpeed,SBUS_CH.LSpeed);
 				HAL_GPIO_TogglePin(GPIOB,GPIO_PIN_0);	
-//				osDelay(1000);
 			}
 		}
   }
@@ -858,6 +887,43 @@ void VCU_REC_task(void *argument)
 		}
   }
   /* USER CODE END VCU_REC_task */
+}
+
+/* USER CODE BEGIN Header_SBUS_Parse_task */
+/**
+* @brief Function implementing the SBUS_Parse thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_SBUS_Parse_task */
+void SBUS_Parse_task(void *argument)
+{
+  /* USER CODE BEGIN SBUS_Parse_task */
+	osStatus err;
+	HAL_UART_Receive_DMA(&huart3, USART3RxData, 1);
+  /* Infinite loop */
+  for(;;)
+  {
+		err = osSemaphoreAcquire (SBUS_Parse_sempHandle, 100);
+    if(err == osOK)
+		{
+//			printf("%x\r\n",USART3RxData[UART3_fifo.usRxRead]); //调试使用
+			
+			sbus_parse(USART3RxData[UART3_fifo.usRxRead]);
+			
+			memset(&USART3RxData[UART3_fifo.usRxRead],0,1);
+			if (++UART3_fifo.usRxRead >= UART3_fifo.usRxBufSize)
+			{
+				UART3_fifo.usRxRead = 0;
+			}
+		}
+		else
+		{
+			SBUS_CH.Start = 0;
+			printf("SBUS信号丢失\r\n");
+		}
+  }
+  /* USER CODE END SBUS_Parse_task */
 }
 
 /* Private application code --------------------------------------------------*/

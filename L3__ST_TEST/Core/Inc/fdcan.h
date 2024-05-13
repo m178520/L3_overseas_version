@@ -41,7 +41,7 @@ extern FDCAN_HandleTypeDef hfdcan1;
 void MX_FDCAN1_Init(void);
 
 /* USER CODE BEGIN Prototypes */
-
+void can_SendPacket(uint8_t *_DataBuf, uint32_t canTxid);
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

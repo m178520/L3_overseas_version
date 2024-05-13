@@ -400,6 +400,11 @@
               <FilePath>..\Core\Src\nav.c</FilePath>
             </File>
             <File>
+              <FileName>sbus.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\sbus.c</FilePath>
+            </File>
+            <File>
               <FileName>motor.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Core\Src\motor.c</FilePath>

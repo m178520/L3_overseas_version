@@ -10,6 +10,8 @@ static char Vehicle_To_Distance_Angle_flag = 0; //用于将起点与终点线在每次只计算
 char wait_run_point[WAIT_RUN_POINT_NUM][2][20];
 
 waypoints_run_status_t waypoints_run_status = {0};
+
+
 PID_TypeDef PID_angle_control;
 
 /*分割目前已获取的目标航点*/
@@ -187,9 +189,10 @@ char  Terminal_decision(double distance)
 	else                            return 1; //未到达终点
 }
 
-double NAV_Control()
+NAV_output_t NAV_Control()
 {
-	double process = 0;
+	NAV_output_t NAV_output;
+//	double process = 0;
 	double Angle,Speed;
 	pointToline_distance_t pointToline_info = {0};
 	tracking_control_t     tracking_control = {0};
@@ -210,19 +213,20 @@ double NAV_Control()
 		tracking_control = tracking_control_Arith(&PID_angle_control,pointToline_info);
 		
 		/*格式转换*/
-		if(tracking_control.direct == VEHICLE_DIRECT_LEFT) Angle = 90 - tracking_control.value/2; 
-		else                                               Angle = 90 + tracking_control.value/2;
+		if(tracking_control.direct == VEHICLE_DIRECT_LEFT) Angle =  tracking_control.value/2;    //方向值0~90
+		else                                               Angle = -tracking_control.value/2;
 		
 		/*驱动控制*/
-		vcu_Trans_LGD(Angle,110);
-		
-		/*进度计算*/
-		process = pointToline_info.VehicleToStart/ pointToline_info.StartToTerminal;
+		//Speed目前手动给值
+		NAV_output.RSpeed =  110 + Angle;
+		NAV_output.LSpeed =  110 - Angle;
+//		/*进度计算*/
+//		process = pointToline_info.VehicleToStart/ pointToline_info.StartToTerminal;
 	}
 	else /*到达终点*/
 	{
-		/*进度计算*/
-		process = 1;
+//		/*进度计算*/
+//		process = 1;
 		
 		if(waypoints_run_status.current_toindex > 0)
 		{
@@ -235,7 +239,7 @@ double NAV_Control()
 	}
 //	printf("点至线的距离：%f,方向：%d\r\n",pointToline_info.pointToline,pointToline_info.direct);
 	printf("方向量：%f,方向：%d\r\n",tracking_control.value,tracking_control.direct);
-	return process;
+	return NAV_output;
 }
 
 
