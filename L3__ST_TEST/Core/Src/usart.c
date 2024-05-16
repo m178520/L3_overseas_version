@@ -61,11 +61,11 @@ UART_fifo_t UART1_fifo = {
 extern osMessageQueueId_t usart1_recv_semp_queueHandle;
 
 /*串口三参数*/
-uint8_t USART3RxData[USART3_Max_Rxbuf_size] = {0};
+uint8_t USART3RxData[USART3_Max_Rxnum_size][USART3_Max_Rxbuf_size] = {0};
 
 UART_fifo_t UART3_fifo = {
 	0,		  /* 接收缓冲区大小 */
-	USART3_Max_Rxbuf_size,     /*发送缓冲区大小*/
+	USART3_Max_Rxnum_size,     /*发送缓冲区大小*/
 
 	0,	/* 发送缓冲区写指针 */
 	0,	/* 发送缓冲区读指针 */
@@ -75,7 +75,7 @@ UART_fifo_t UART3_fifo = {
 	0,	/* 接收缓冲区读指针 */
 };
 
-extern osSemaphoreId_t SBUS_Parse_sempHandle;
+extern osMessageQueueId_t usart3_recv_semp_queueHandle;
 
 /* USER CODE END 0 */
 
@@ -191,15 +191,16 @@ void MX_USART3_UART_Init(void)
   /* USER CODE END USART3_Init 1 */
   huart3.Instance = USART3;
   huart3.Init.BaudRate = 100000;
-  huart3.Init.WordLength = UART_WORDLENGTH_8B;
-  huart3.Init.StopBits = UART_STOPBITS_1;
-  huart3.Init.Parity = UART_PARITY_NONE;
+  huart3.Init.WordLength = UART_WORDLENGTH_9B;
+  huart3.Init.StopBits = UART_STOPBITS_2;
+  huart3.Init.Parity = UART_PARITY_EVEN;
   huart3.Init.Mode = UART_MODE_TX_RX;
   huart3.Init.HwFlowCtl = UART_HWCONTROL_NONE;
   huart3.Init.OverSampling = UART_OVERSAMPLING_16;
   huart3.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
   huart3.Init.ClockPrescaler = UART_PRESCALER_DIV1;
-  huart3.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+  huart3.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_RXINVERT_INIT;
+  huart3.AdvancedInit.RxPinLevelInvert = UART_ADVFEATURE_RXINV_ENABLE;
   if (HAL_UART_Init(&huart3) != HAL_OK)
   {
     Error_Handler();
@@ -577,23 +578,35 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
 		}
 		HAL_UARTEx_ReceiveToIdle_DMA(&huart2, USART2RxData[UART2_fifo.usRxWrite],USART2_Max_Rxbuf_size);
 	}
-}
-
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-{
-	if(huart->Instance == USART3)
+	else if(huart->Instance == USART3)
 	{
 		if (++UART3_fifo.usRxWrite >= UART3_fifo.usRxBufSize)
 		{
 			UART3_fifo.usRxWrite = 0;
 		}
-		if (osSemaphoreGetCount (SBUS_Parse_sempHandle) < UART3_fifo.usRxBufSize)
+		if (osMessageQueueGetCount (usart3_recv_semp_queueHandle) < UART3_fifo.usRxBufSize)
 		{
-			osSemaphoreRelease(SBUS_Parse_sempHandle);
+			osMessageQueuePut(usart3_recv_semp_queueHandle,&Size,0,0);
 		}
-		HAL_UART_Receive_DMA(&huart3, &USART3RxData[UART3_fifo.usRxWrite], 1);
+		HAL_UARTEx_ReceiveToIdle_DMA(&huart3, USART3RxData[UART3_fifo.usRxWrite],USART3_Max_Rxbuf_size);
 	}
 }
+
+//void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+//{
+//	if(huart->Instance == USART3)
+//	{
+//		if (++UART3_fifo.usRxWrite >= UART3_fifo.usRxBufSize)
+//		{
+//			UART3_fifo.usRxWrite = 0;
+//		}
+//		if (osSemaphoreGetCount (SBUS_Parse_sempHandle) < UART3_fifo.usRxBufSize)
+//		{
+//			osSemaphoreRelease(SBUS_Parse_sempHandle);
+//		}
+//		HAL_UART_Receive_DMA(&huart3, &USART3RxData[UART3_fifo.usRxWrite], 1);
+//	}
+//}
 
 
 /* USER CODE END 1 */

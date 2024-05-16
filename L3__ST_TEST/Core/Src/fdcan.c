@@ -39,7 +39,7 @@ void MX_FDCAN1_Init(void)
   /* USER CODE END FDCAN1_Init 1 */
   hfdcan1.Instance = FDCAN1;
   hfdcan1.Init.FrameFormat = FDCAN_FRAME_CLASSIC;
-  hfdcan1.Init.Mode = FDCAN_MODE_NORMAL;
+  hfdcan1.Init.Mode = FDCAN_MODE_INTERNAL_LOOPBACK;
   hfdcan1.Init.AutoRetransmission = ENABLE;
   hfdcan1.Init.TransmitPause = DISABLE;
   hfdcan1.Init.ProtocolException = ENABLE;
@@ -51,7 +51,7 @@ void MX_FDCAN1_Init(void)
   hfdcan1.Init.DataSyncJumpWidth = 8;
   hfdcan1.Init.DataTimeSeg1 = 31;
   hfdcan1.Init.DataTimeSeg2 = 8;
-  hfdcan1.Init.MessageRAMOffset = 5;
+  hfdcan1.Init.MessageRAMOffset = 0;
   hfdcan1.Init.StdFiltersNbr = 1;
   hfdcan1.Init.ExtFiltersNbr = 0;
   hfdcan1.Init.RxFifo0ElmtsNbr = 1;
@@ -90,8 +90,8 @@ void MX_FDCAN1_Init(void)
 	sFilterConfig1.FilterIndex = 0;   						          /* 用于过滤索引，标准ID，范围0到127 */
 	sFilterConfig1.FilterType = FDCAN_FILTER_MASK;          /* 过滤器采样屏蔽位模式 -----------*/
 	sFilterConfig1.FilterConfig = FDCAN_FILTER_TO_RXFIFO0;  /* 如果过滤匹配，将数据保存到Rx FIFO 0 */
-	sFilterConfig1.FilterID1 = 0x013;                       /* 屏蔽位模式下，FilterID1是消息ID */
-	sFilterConfig1.FilterID2 = 0x7FF; 						          /* 屏蔽位模式下，FilterID2是消息屏蔽位 */
+	sFilterConfig1.FilterID1 = 0x601;                       /* 屏蔽位模式下，FilterID1是消息ID */
+	sFilterConfig1.FilterID2 = 0x000; 						          /* 屏蔽位模式下，FilterID2是消息屏蔽位 */
 	HAL_FDCAN_ConfigFilter(&hfdcan1, &sFilterConfig1);      /* 配置过滤器 */
 	
 		HAL_FDCAN_ConfigGlobalFilter(&hfdcan1,                 /* 全局过滤设置 */
@@ -144,20 +144,12 @@ void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef* fdcanHandle)
     /* FDCAN1 clock enable */
     __HAL_RCC_FDCAN_CLK_ENABLE();
 
-    __HAL_RCC_GPIOI_CLK_ENABLE();
     __HAL_RCC_GPIOA_CLK_ENABLE();
     /**FDCAN1 GPIO Configuration
-    PI9     ------> FDCAN1_RX
+    PA11     ------> FDCAN1_RX
     PA12     ------> FDCAN1_TX
     */
-    GPIO_InitStruct.Pin = GPIO_PIN_9;
-    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-    GPIO_InitStruct.Alternate = GPIO_AF9_FDCAN1;
-    HAL_GPIO_Init(GPIOI, &GPIO_InitStruct);
-
-    GPIO_InitStruct.Pin = GPIO_PIN_12;
+    GPIO_InitStruct.Pin = GPIO_PIN_11|GPIO_PIN_12;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -185,12 +177,10 @@ void HAL_FDCAN_MspDeInit(FDCAN_HandleTypeDef* fdcanHandle)
     __HAL_RCC_FDCAN_CLK_DISABLE();
 
     /**FDCAN1 GPIO Configuration
-    PI9     ------> FDCAN1_RX
+    PA11     ------> FDCAN1_RX
     PA12     ------> FDCAN1_TX
     */
-    HAL_GPIO_DeInit(GPIOI, GPIO_PIN_9);
-
-    HAL_GPIO_DeInit(GPIOA, GPIO_PIN_12);
+    HAL_GPIO_DeInit(GPIOA, GPIO_PIN_11|GPIO_PIN_12);
 
     /* FDCAN1 interrupt Deinit */
     HAL_NVIC_DisableIRQ(FDCAN1_IT0_IRQn);
@@ -234,7 +224,7 @@ void can_SendPacket(uint8_t *_DataBuf, uint32_t canTxid)
 	TxHeader.Identifier = canTxid;             		         /* 设置接收帧消息的ID */
 	TxHeader.IdType = FDCAN_STANDARD_ID;     		         /* 标准ID */
 	TxHeader.TxFrameType = FDCAN_DATA_FRAME;		         /* 数据帧 */
-	TxHeader.DataLength = 8;      				             /* 发送数据长度 */
+	TxHeader.DataLength = FDCAN_DLC_BYTES_8;      			 /* 发送数据长度 */
 	TxHeader.ErrorStateIndicator = FDCAN_ESI_ACTIVE;     /* 设置错误状态指示 */
 	TxHeader.BitRateSwitch = FDCAN_BRS_OFF;              /* 开启可变波特率 */
 	TxHeader.FDFormat = FDCAN_CLASSIC_CAN;               /* FDCAN格式 */
@@ -242,5 +232,32 @@ void can_SendPacket(uint8_t *_DataBuf, uint32_t canTxid)
 	TxHeader.MessageMarker = 1;                          /* 用于复制到TX EVENT FIFO的消息Maker来识别消息状态，范围0到0xFF */
 	
 	HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &TxHeader, _DataBuf); /* 根据需要，可以修改_DataBuf数值 */
+}
+/*
+CAN1中断线0的新消息接受中断回调函数
+*/
+FDCAN_RxHeaderTypeDef g_Can1RxHeader;
+uint8_t CAN1Rxbuff[512] = {0};
+
+
+void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
+{
+  /* NOTE : his function Should not be modified, when the callback is needed,
+            the HAL_FDCAN_RxFifo0Callback could be implemented in the user file
+   */
+if ((RxFifo0ITs & FDCAN_IT_RX_FIFO0_NEW_MESSAGE) != RESET)
+		{
+			/* 从RX FIFO0读取数据 */
+			HAL_FDCAN_GetRxMessage(hfdcan, FDCAN_RX_FIFO0, &g_Can1RxHeader, CAN1Rxbuff);
+//			if(strlen(CAN1Rxbuff) > 1)
+//			{
+				printf("%d     \r\n",strlen(CAN1Rxbuff));
+//				memcpy(USART1TxData[UART_fifo.usTxWrite],CAN1Rxbuff,strlen(CAN1Rxbuff));
+//				printf("%s\r\n",USART1TxData[UART_fifo.usTxWrite]);
+//			}
+
+			/* 重新使能RX FIFO0阈值中断 */
+			HAL_FDCAN_ActivateNotification(hfdcan, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0);
+		}
 }
 /* USER CODE END 1 */

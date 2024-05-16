@@ -1,23 +1,15 @@
 #include "sbus.h"
+#include "deal_string.h"
 
 SBUS_t SBUS_CH = {0};
 uint8_t controlFlag = noCont; 
 
 /*½âÎösbusµÄÖµ*/
-void sbus_parse(char bytes)
+void sbus_parse(uint8_t* bytes,uint8_t len)
 {
-	static char sbus_data[SBUS_Data_Size] = {0};
-	static char index = 0;
-	if(bytes == 0x0f)
-	{
-		index = 0;
-		sbus_data[index] = bytes;
-		sbus_data[24]    = 0xff;
-	}
-	else
-	{
-		sbus_data[index++] = bytes;
-	}
+	char sbus_data[SBUS_Data_Size] = {0};
+
+	memcpy(sbus_data,bytes,len);
 	
 	if(sbus_data[0] == 0x0F && sbus_data[24] == 0x00)
 	{

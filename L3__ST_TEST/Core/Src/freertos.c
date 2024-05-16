@@ -33,6 +33,7 @@
 #include "motor.h"
 #include "WGS84ToAngle.h"
 
+#include "fdcan.h"
 
 extern TIM_HandleTypeDef htim6;
 /* USER CODE END Includes */
@@ -211,15 +212,15 @@ osMessageQueueId_t SPI1_recv_semp_queueHandle;
 const osMessageQueueAttr_t SPI1_recv_semp_queue_attributes = {
   .name = "SPI1_recv_semp_queue"
 };
+/* Definitions for usart3_recv_semp_queue */
+osMessageQueueId_t usart3_recv_semp_queueHandle;
+const osMessageQueueAttr_t usart3_recv_semp_queue_attributes = {
+  .name = "usart3_recv_semp_queue"
+};
 /* Definitions for APP_Info_Submit_Semp */
 osSemaphoreId_t APP_Info_Submit_SempHandle;
 const osSemaphoreAttr_t APP_Info_Submit_Semp_attributes = {
   .name = "APP_Info_Submit_Semp"
-};
-/* Definitions for SBUS_Parse_semp */
-osSemaphoreId_t SBUS_Parse_sempHandle;
-const osSemaphoreAttr_t SBUS_Parse_semp_attributes = {
-  .name = "SBUS_Parse_semp"
 };
 /* Definitions for Device_Run_status_event */
 osEventFlagsId_t Device_Run_status_eventHandle;
@@ -270,9 +271,6 @@ void MX_FREERTOS_Init(void) {
   /* creation of APP_Info_Submit_Semp */
   APP_Info_Submit_SempHandle = osSemaphoreNew(1, 0, &APP_Info_Submit_Semp_attributes);
 
-  /* creation of SBUS_Parse_semp */
-  SBUS_Parse_sempHandle = osSemaphoreNew(100, 100, &SBUS_Parse_semp_attributes);
-
   /* USER CODE BEGIN RTOS_SEMAPHORES */
   /* add semaphores, ... */
   /* USER CODE END RTOS_SEMAPHORES */
@@ -299,6 +297,9 @@ void MX_FREERTOS_Init(void) {
 
   /* creation of SPI1_recv_semp_queue */
   SPI1_recv_semp_queueHandle = osMessageQueueNew (15, sizeof(uint16_t), &SPI1_recv_semp_queue_attributes);
+
+  /* creation of usart3_recv_semp_queue */
+  usart3_recv_semp_queueHandle = osMessageQueueNew (30, sizeof(uint16_t), &usart3_recv_semp_queue_attributes);
 
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
@@ -368,6 +369,7 @@ void MX_FREERTOS_Init(void) {
 void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN StartDefaultTask */
+	uint8_t test[8] = {0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08};
   /* Infinite loop */
   for(;;)
   {
@@ -378,6 +380,8 @@ void StartDefaultTask(void *argument)
 		/*需要的内存很大，建议1024*/
 //		WGS84_axis_t Start_To_Distance_Angle	= GPStoXY(125,43,126,44);
 //		printf("%f,%f,%f\r\n",Start_To_Distance_Angle.s12,Start_To_Distance_Angle.azi1,Start_To_Distance_Angle.azi2);
+		
+		can_SendPacket(test, DRIVEID);
 		
 		HAL_GPIO_TogglePin(GPIOB,GPIO_PIN_1);
 		osDelay(1000);
@@ -900,18 +904,19 @@ void SBUS_Parse_task(void *argument)
 {
   /* USER CODE BEGIN SBUS_Parse_task */
 	osStatus err;
-	HAL_UART_Receive_DMA(&huart3, USART3RxData, 1);
+	uint16_t Recv_Len;
+	HAL_UARTEx_ReceiveToIdle_DMA(&huart3, USART3RxData[UART3_fifo.usRxWrite],USART3_Max_Rxbuf_size);
   /* Infinite loop */
   for(;;)
   {
-		err = osSemaphoreAcquire (SBUS_Parse_sempHandle, 100);
-    if(err == osOK)
+		err = osMessageQueueGet (usart3_recv_semp_queueHandle, &Recv_Len, 0, portMAX_DELAY);
+		if(err == osOK)
 		{
 //			printf("%x\r\n",USART3RxData[UART3_fifo.usRxRead]); //调试使用
 			
-			sbus_parse(USART3RxData[UART3_fifo.usRxRead]);
+			sbus_parse(USART3RxData[UART3_fifo.usRxRead],Recv_Len);
 			
-			memset(&USART3RxData[UART3_fifo.usRxRead],0,1);
+//			memset(&USART3RxData[UART3_fifo.usRxRead],0,Recv_Len);
 			if (++UART3_fifo.usRxRead >= UART3_fifo.usRxBufSize)
 			{
 				UART3_fifo.usRxRead = 0;

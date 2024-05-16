@@ -11,7 +11,7 @@
 #define sbusCont 	1
 #define NALCont		2
 
-#define SBUS_Data_Size 25 	// sbus数据长度 SBUSDATASIZE
+#define SBUS_Data_Size 30 	// sbus数据长度 SBUSDATASIZE
 #define Here_Median 1024 // 遥控器通道中间值
 
 typedef struct
@@ -42,7 +42,7 @@ typedef struct
 extern SBUS_t SBUS_CH;
 extern uint8_t controlFlag;
 
-void sbus_parse(char bytes);
+void sbus_parse(uint8_t* bytes,uint8_t len);
 float sbus_to_range(int16_t sbus_valude, float newMin, float newMax, float oldMin, float oldMax);
 	
 #endif

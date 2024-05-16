@@ -68,3 +68,4 @@ l3__st_test\freertos.o: ../Arithmetic/WGS84transform/WGS84ToAngle.h
 l3__st_test\freertos.o: ../GeographicLib-C-2.1/geodesic.h
 l3__st_test\freertos.o: ../Core/Inc/sbus.h
 l3__st_test\freertos.o: ../Core/Inc/motor.h
+l3__st_test\freertos.o: ../Core/Inc/fdcan.h
