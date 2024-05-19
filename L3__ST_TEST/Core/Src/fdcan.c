@@ -21,7 +21,20 @@
 #include "fdcan.h"
 
 /* USER CODE BEGIN 0 */
-FDCAN_FilterTypeDef sFilterConfig1;
+uint8_t CAN1RxData[CAN1_Max_Rxnum_size][CAN1_Max_Rxbuf_size] = {0};
+uint8_t CAN1TxData[CAN1_Max_Txnum_size][CAN1_Max_Txbuf_size] = {0};
+
+CAN_fifo_t CAN1_fifo = {
+	CAN1_Max_Txnum_size,		  /* 发送缓冲区大小 */
+	CAN1_Max_Rxnum_size,      /* 接收缓冲区大小 */
+
+	0,	/* 发送缓冲区写指针 */
+	0,	/* 发送缓冲区读指针 */
+	0,	/* 还未读取的新数据个数 */
+	
+	0,	/* 接收缓冲区写指针 */
+	0,	/* 接收缓冲区读指针 */
+};
 /* USER CODE END 0 */
 
 FDCAN_HandleTypeDef hfdcan1;
@@ -39,7 +52,7 @@ void MX_FDCAN1_Init(void)
   /* USER CODE END FDCAN1_Init 1 */
   hfdcan1.Instance = FDCAN1;
   hfdcan1.Init.FrameFormat = FDCAN_FRAME_CLASSIC;
-  hfdcan1.Init.Mode = FDCAN_MODE_INTERNAL_LOOPBACK;
+  hfdcan1.Init.Mode = FDCAN_MODE_NORMAL;
   hfdcan1.Init.AutoRetransmission = ENABLE;
   hfdcan1.Init.TransmitPause = DISABLE;
   hfdcan1.Init.ProtocolException = ENABLE;
@@ -85,7 +98,7 @@ void MX_FDCAN1_Init(void)
 		FilterID2 = 0x7FF  111 1111 1111
 		表示仅接收ID为0x111的FDCAN帧。
 	*/
-	
+	FDCAN_FilterTypeDef sFilterConfig1;
 	sFilterConfig1.IdType = FDCAN_STANDARD_ID;              /* 设置标准ID或者扩展ID */
 	sFilterConfig1.FilterIndex = 0;   						          /* 用于过滤索引，标准ID，范围0到127 */
 	sFilterConfig1.FilterType = FDCAN_FILTER_MASK;          /* 过滤器采样屏蔽位模式 -----------*/
@@ -191,6 +204,20 @@ void HAL_FDCAN_MspDeInit(FDCAN_HandleTypeDef* fdcanHandle)
 }
 
 /* USER CODE BEGIN 1 */
+
+void CAN1_send_data_apply(int8_t* data)
+{
+	memcpy(CAN1TxData[CAN1_fifo.usTxWrite],data,8);
+	if (++CAN1_fifo.usTxWrite >= CAN1_fifo.usTxBufSize)
+	{
+		CAN1_fifo.usTxWrite = 0;
+	}
+	if (CAN1_fifo.usTxLen < CAN1_fifo.usTxBufSize)
+	{
+		CAN1_fifo.usTxLen++;
+	}
+}
+
 /*
 *********************************************************************************************************
 *	函 数 名: can_SendPacket
@@ -251,7 +278,7 @@ if ((RxFifo0ITs & FDCAN_IT_RX_FIFO0_NEW_MESSAGE) != RESET)
 			HAL_FDCAN_GetRxMessage(hfdcan, FDCAN_RX_FIFO0, &g_Can1RxHeader, CAN1Rxbuff);
 //			if(strlen(CAN1Rxbuff) > 1)
 //			{
-				printf("%d     \r\n",strlen(CAN1Rxbuff));
+//				printf("%d     \r\n",strlen(CAN1Rxbuff));
 //				memcpy(USART1TxData[UART_fifo.usTxWrite],CAN1Rxbuff,strlen(CAN1Rxbuff));
 //				printf("%s\r\n",USART1TxData[UART_fifo.usTxWrite]);
 //			}

@@ -1,8 +1,11 @@
 #include "sbus.h"
 #include "deal_string.h"
+#include "cmsis_os.h"
 
 SBUS_t SBUS_CH = {0};
 uint8_t controlFlag = noCont; 
+
+extern osSemaphoreId_t SBUS_RUN_SempHandle;
 
 /*½âÎösbusµÄÖµ*/
 void sbus_parse(uint8_t* bytes,uint8_t len)
@@ -38,8 +41,8 @@ void sbus_parse(uint8_t* bytes,uint8_t len)
 		
 		if(SBUS_CH.Start == 1 && SBUS_CH.CH6 == 201)
 		{
-			
 			controlFlag = sbusCont;
+			osSemaphoreRelease(SBUS_RUN_SempHandle);
 		}
 		else if(SBUS_CH.CH10 == 1801)
 		{

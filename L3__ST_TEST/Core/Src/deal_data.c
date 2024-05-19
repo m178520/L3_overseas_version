@@ -7,8 +7,8 @@ extern uint32_t EC600U_REC_block_time;
 extern osMessageQueueId_t usart1_recv_semp_queueHandle;
 extern osMessageQueueId_t usart1_send_semp_queueHandle;
 
-extern osMessageQueueId_t usart2_recv_semp_queueHandle;
-extern osMessageQueueId_t usart2_send_semp_queueHandle;
+extern osMessageQueueId_t VCU_recv_semp_queueHandle;
+extern osMessageQueueId_t VCU_send_semp_queueHandle;
 
 extern osMessageQueueId_t HTTP_REQUEST_queueHandle;;
 extern osEventFlagsId_t Device_Run_status_eventHandle;
@@ -130,9 +130,9 @@ osStatus_t usart2_send_data_apply(uint8_t *data,uint16_t len)
 	{
 		UART2_fifo.usTxWrite = 0;
 	}
-	if (osMessageQueueGetCount(usart2_send_semp_queueHandle) < UART2_fifo.usTxBufSize)
+	if (osMessageQueueGetCount(VCU_send_semp_queueHandle) < UART2_fifo.usTxBufSize)
 	{
-		status = osMessageQueuePut(usart2_send_semp_queueHandle,&len,0,10);
+		status = osMessageQueuePut(VCU_send_semp_queueHandle,&len,0,10);
 	}
 	return  status;
 }

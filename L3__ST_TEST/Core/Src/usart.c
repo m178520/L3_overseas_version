@@ -39,7 +39,7 @@ UART_fifo_t UART2_fifo = {
 	0,	/* 接收缓冲区读指针 */
 };
 
-extern osMessageQueueId_t usart2_recv_semp_queueHandle;
+extern osMessageQueueId_t VCU_recv_semp_queueHandle;
 
 /*串口一参数*/
 
@@ -572,9 +572,9 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
 		{
 			UART2_fifo.usRxWrite = 0;
 		}
-		if (osMessageQueueGetCount(usart2_recv_semp_queueHandle) < UART2_fifo.usRxBufSize)
+		if (osMessageQueueGetCount(VCU_recv_semp_queueHandle) < UART2_fifo.usRxBufSize)
 		{
-			osMessageQueuePut(usart2_recv_semp_queueHandle,&Size,0,0);
+			osMessageQueuePut(VCU_recv_semp_queueHandle,&Size,0,0);
 		}
 		HAL_UARTEx_ReceiveToIdle_DMA(&huart2, USART2RxData[UART2_fifo.usRxWrite],USART2_Max_Rxbuf_size);
 	}

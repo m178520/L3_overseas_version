@@ -34,6 +34,7 @@
 #include "WGS84ToAngle.h"
 
 #include "fdcan.h"
+#include "motor.h"
 
 extern TIM_HandleTypeDef htim6;
 /* USER CODE END Includes */
@@ -117,14 +118,14 @@ osThreadId_t APP_Info_SubmitHandle;
 const osThreadAttr_t APP_Info_Submit_attributes = {
   .name = "APP_Info_Submit",
   .stack_size = 512 * 4,
-  .priority = (osPriority_t) osPriorityLow,
+  .priority = (osPriority_t) osPriorityLow1,
 };
 /* Definitions for Device_Run */
 osThreadId_t Device_RunHandle;
 const osThreadAttr_t Device_Run_attributes = {
   .name = "Device_Run",
   .stack_size = 1024 * 4,
-  .priority = (osPriority_t) osPriorityLow,
+  .priority = (osPriority_t) osPriorityLow1,
 };
 /* Definitions for EC600U_SEND */
 osThreadId_t EC600U_SENDHandle;
@@ -180,17 +181,17 @@ osThreadId_t SBUS_ParseHandle;
 const osThreadAttr_t SBUS_Parse_attributes = {
   .name = "SBUS_Parse",
   .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityLow,
+  .priority = (osPriority_t) osPriorityLow2,
 };
-/* Definitions for usart2_send_semp_queue */
-osMessageQueueId_t usart2_send_semp_queueHandle;
-const osMessageQueueAttr_t usart2_send_semp_queue_attributes = {
-  .name = "usart2_send_semp_queue"
+/* Definitions for VCU_send_semp_queue */
+osMessageQueueId_t VCU_send_semp_queueHandle;
+const osMessageQueueAttr_t VCU_send_semp_queue_attributes = {
+  .name = "VCU_send_semp_queue"
 };
-/* Definitions for usart2_recv_semp_queue */
-osMessageQueueId_t usart2_recv_semp_queueHandle;
-const osMessageQueueAttr_t usart2_recv_semp_queue_attributes = {
-  .name = "usart2_recv_semp_queue"
+/* Definitions for VCU_recv_semp_queue */
+osMessageQueueId_t VCU_recv_semp_queueHandle;
+const osMessageQueueAttr_t VCU_recv_semp_queue_attributes = {
+  .name = "VCU_recv_semp_queue"
 };
 /* Definitions for usart1_recv_semp_queue */
 osMessageQueueId_t usart1_recv_semp_queueHandle;
@@ -221,6 +222,11 @@ const osMessageQueueAttr_t usart3_recv_semp_queue_attributes = {
 osSemaphoreId_t APP_Info_Submit_SempHandle;
 const osSemaphoreAttr_t APP_Info_Submit_Semp_attributes = {
   .name = "APP_Info_Submit_Semp"
+};
+/* Definitions for SBUS_RUN_Semp */
+osSemaphoreId_t SBUS_RUN_SempHandle;
+const osSemaphoreAttr_t SBUS_RUN_Semp_attributes = {
+  .name = "SBUS_RUN_Semp"
 };
 /* Definitions for Device_Run_status_event */
 osEventFlagsId_t Device_Run_status_eventHandle;
@@ -271,6 +277,9 @@ void MX_FREERTOS_Init(void) {
   /* creation of APP_Info_Submit_Semp */
   APP_Info_Submit_SempHandle = osSemaphoreNew(1, 0, &APP_Info_Submit_Semp_attributes);
 
+  /* creation of SBUS_RUN_Semp */
+  SBUS_RUN_SempHandle = osSemaphoreNew(15, 15, &SBUS_RUN_Semp_attributes);
+
   /* USER CODE BEGIN RTOS_SEMAPHORES */
   /* add semaphores, ... */
   /* USER CODE END RTOS_SEMAPHORES */
@@ -280,11 +289,11 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE END RTOS_TIMERS */
 
   /* Create the queue(s) */
-  /* creation of usart2_send_semp_queue */
-  usart2_send_semp_queueHandle = osMessageQueueNew (15, sizeof(uint16_t), &usart2_send_semp_queue_attributes);
+  /* creation of VCU_send_semp_queue */
+  VCU_send_semp_queueHandle = osMessageQueueNew (15, sizeof(uint16_t), &VCU_send_semp_queue_attributes);
 
-  /* creation of usart2_recv_semp_queue */
-  usart2_recv_semp_queueHandle = osMessageQueueNew (15, sizeof(uint16_t), &usart2_recv_semp_queue_attributes);
+  /* creation of VCU_recv_semp_queue */
+  VCU_recv_semp_queueHandle = osMessageQueueNew (15, sizeof(uint16_t), &VCU_recv_semp_queue_attributes);
 
   /* creation of usart1_recv_semp_queue */
   usart1_recv_semp_queueHandle = osMessageQueueNew (15, sizeof(uint16_t), &usart1_recv_semp_queue_attributes);
@@ -369,7 +378,7 @@ void MX_FREERTOS_Init(void) {
 void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN StartDefaultTask */
-	uint8_t test[8] = {0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08};
+//	uint8_t test[8] = {0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08};
   /* Infinite loop */
   for(;;)
   {
@@ -381,7 +390,7 @@ void StartDefaultTask(void *argument)
 //		WGS84_axis_t Start_To_Distance_Angle	= GPStoXY(125,43,126,44);
 //		printf("%f,%f,%f\r\n",Start_To_Distance_Angle.s12,Start_To_Distance_Angle.azi1,Start_To_Distance_Angle.azi2);
 		
-		can_SendPacket(test, DRIVEID);
+//		can_SendPacket(test, DRIVEID);
 		
 		HAL_GPIO_TogglePin(GPIOB,GPIO_PIN_1);
 		osDelay(1000);
@@ -506,6 +515,7 @@ void Device_Run_task(void *argument)
 {
   /* USER CODE BEGIN Device_Run_task */
 	uint32_t uxBits;
+	osStatus_t err;
 	NAV_output_t NAV_output = {0};
   /* Infinite loop */
   for(;;)
@@ -519,7 +529,8 @@ void Device_Run_task(void *argument)
 				if(Device_Run_Status.Curstatus == Job_Working)                                                      //是否完成了可工作的准备
 				{
 					NAV_output = NAV_Control();
-					Direct_Drive_motor(NAV_output.RSpeed,NAV_output.LSpeed);
+					CAN1_send_data_apply(Direct_Drive_motor(NAV_output.RSpeed,NAV_output.LSpeed).L_Msg);
+					CAN1_send_data_apply(Direct_Drive_motor(NAV_output.RSpeed,NAV_output.LSpeed).R_Msg);
 					HAL_GPIO_TogglePin(GPIOB,GPIO_PIN_0);	
 				}
 			}
@@ -530,9 +541,11 @@ void Device_Run_task(void *argument)
 		}
 		else if(controlFlag == sbusCont)
 		{
-			if(SBUS_CH.Start == 1) //说明连接了sbus
+			err = osSemaphoreAcquire (SBUS_RUN_SempHandle, 1000);
+			if(err == osOK)
 			{
-				Direct_Drive_motor(SBUS_CH.RSpeed,SBUS_CH.LSpeed);
+				CAN1_send_data_apply(Direct_Drive_motor(SBUS_CH.RSpeed,SBUS_CH.LSpeed).L_Msg);
+				CAN1_send_data_apply(Direct_Drive_motor(SBUS_CH.RSpeed,SBUS_CH.LSpeed).R_Msg);
 				HAL_GPIO_TogglePin(GPIOB,GPIO_PIN_0);	
 			}
 		}
@@ -709,7 +722,7 @@ void Power_Check_task(void *argument)
   /* Infinite loop */
   for(;;)
   {
-//		err = osMessageQueueGet (usart2_recv_semp_queueHandle, &len, 0, portMAX_DELAY); //调试阶段未使用，正式阶段将阻塞时间设置为1000 暂时使用串口二
+//		err = osMessageQueueGet (VCU_recv_semp_queueHandle, &len, 0, portMAX_DELAY); //调试阶段未使用，正式阶段将阻塞时间设置为1000 暂时使用串口二
 //		if(err == osOK)
 //		{
 //			/*如果电量充足*/
@@ -832,21 +845,43 @@ void GPS_REC_task(void *argument)
 void VCU_send_task(void *argument)
 {
   /* USER CODE BEGIN VCU_send_task */
-	osStatus_t err;
-	uint16_t Send_Len;
+//	osStatus_t err;
+//	uint16_t Send_Len;
   /* Infinite loop */
   for(;;)
   {
-		err = osMessageQueueGet (usart2_send_semp_queueHandle, &Send_Len, 0, portMAX_DELAY);
-		if(err == osOK)
+//		err = osMessageQueueGet (VCU_send_semp_queueHandle, &Send_Len, 0, portMAX_DELAY);
+//		if(err == osOK)
+//		{
+//			HAL_UART_Transmit_DMA(&huart2,USART2TxData[UART2_fifo.usTxRead],Send_Len );
+//			if (++UART2_fifo.usTxRead >= UART2_fifo.usTxBufSize)
+//			{
+//				UART2_fifo.usTxRead = 0;
+//			}
+//			osDelay(20);
+//		}
+		/* 查询式 can发送*/
+		//进入临界区
+		taskENTER_CRITICAL();
+		if(CAN1_fifo.usTxLen > 0)
 		{
-			HAL_UART_Transmit_DMA(&huart2,USART2TxData[UART2_fifo.usTxRead],Send_Len );
-			if (++UART2_fifo.usTxRead >= UART2_fifo.usTxBufSize)
+			/* 发送信息 */
+			can_SendPacket(CAN1TxData[CAN1_fifo.usTxRead],DRIVEID);
+			memset(CAN1TxData[CAN1_fifo.usTxRead],0,8);
+			if (++CAN1_fifo.usTxRead >= CAN1_fifo.usTxBufSize)
 			{
-				UART2_fifo.usTxRead = 0;
+				CAN1_fifo.usTxRead = 0;
 			}
-			osDelay(20);
+			CAN1_fifo.usTxLen--;
 		}
+		else
+		{
+			can_SendPacket((uint8_t *)Direct_Drive_motor(0, 0).L_Msg,DRIVEID);
+			can_SendPacket((uint8_t *)Direct_Drive_motor(0, 0).R_Msg,DRIVEID);
+			osDelay(10);
+		}
+		/*退出临界区*/
+		taskEXIT_CRITICAL();
   }
   /* USER CODE END VCU_send_task */
 }
@@ -868,7 +903,7 @@ void VCU_REC_task(void *argument)
   /* Infinite loop */
   for(;;)
   {
-		err = osMessageQueueGet (usart2_recv_semp_queueHandle, &Recv_Len, 0, portMAX_DELAY);
+		err = osMessageQueueGet (VCU_recv_semp_queueHandle, &Recv_Len, 0, portMAX_DELAY);
 		if(err == osOK)
 		{
 			if(Recv_Len != 0) //说明串口发送来的数据

@@ -22,8 +22,15 @@
 #define ELECMAC_LIFT  0x02
 #define ELECMAC_RIGHT 0x01
 
+typedef struct
+{
+	int8_t L_Msg[8];
+	int8_t R_Msg[8];
+}CAN_Msg_t;
+
+
 void vcu_Trans_LGD(double Angle,double Speed);
-void Direct_Drive_motor(int16_t RSpeed, int16_t LSpeed);
+CAN_Msg_t Direct_Drive_motor(int16_t RSpeed, int16_t LSpeed);
 	
 #endif
 

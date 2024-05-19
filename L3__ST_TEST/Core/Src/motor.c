@@ -19,8 +19,10 @@ void vcu_Trans_LGD(double Angle,double Speed)
 	usart2_send_data_apply(vcu_data,8);
 }
 
-void Direct_Drive_motor(int16_t RSpeed, int16_t LSpeed)
+CAN_Msg_t Direct_Drive_motor(int16_t RSpeed, int16_t LSpeed)
 {
+	
+	CAN_Msg_t L_R_Msg = {0};
 		// 两侧轮子速度值
 	int32_t RightSpeed = 0;
 	int32_t LiftSpeed  = 0;
@@ -56,10 +58,10 @@ void Direct_Drive_motor(int16_t RSpeed, int16_t LSpeed)
 		}
 		
 		driver_speed(LiftSpeed, ELECMAC_LIFT);
-		can_SendPacket((uint8_t*)txSpeedMsg, DRIVEID);
+		memcpy(L_R_Msg.L_Msg,txSpeedMsg,8 );
 		
 		driver_speed(RightSpeed, ELECMAC_RIGHT);
-		can_SendPacket((uint8_t*)txSpeedMsg, DRIVEID);	
+		memcpy(L_R_Msg.R_Msg,txSpeedMsg,8 );
 	}
 	if(controlFlag == sbusCont)
 	{
@@ -92,10 +94,10 @@ void Direct_Drive_motor(int16_t RSpeed, int16_t LSpeed)
 			LiftSpeed = CANSpeedLow;
 		}
 		driver_speed(LiftSpeed, ELECMAC_LIFT);
-		can_SendPacket((uint8_t*)txSpeedMsg, DRIVEID);
+		memcpy(L_R_Msg.L_Msg,txSpeedMsg,8 );
 		
 		driver_speed(RightSpeed, ELECMAC_RIGHT);
-		can_SendPacket((uint8_t*)txSpeedMsg, DRIVEID);
+		memcpy(L_R_Msg.R_Msg,txSpeedMsg,8 );
 			
 	}
 	else if(controlFlag == noCont)
@@ -104,11 +106,12 @@ void Direct_Drive_motor(int16_t RSpeed, int16_t LSpeed)
 		LiftSpeed  = CANSpeedStop;
 		
 		driver_speed(LiftSpeed, ELECMAC_LIFT);
-		can_SendPacket((uint8_t*)txSpeedMsg, DRIVEID);
+		memcpy(L_R_Msg.L_Msg,txSpeedMsg,8 );
 		
 		driver_speed(RightSpeed, ELECMAC_RIGHT);
-		can_SendPacket((uint8_t*)txSpeedMsg, DRIVEID);
+		memcpy(L_R_Msg.R_Msg,txSpeedMsg,8 );
 	}
+	return L_R_Msg;
 }
 
 /* -------------------------------- begin  -------------------------------- */
