@@ -5,7 +5,7 @@
 
 int8_t txSpeedMsg[8] = {0};
 
-void driver_speed(int32_t speed, uint8_t driverID);
+void driver_speed(int16_t speed, uint8_t driverID);
 
 void vcu_Trans_LGD(double Angle,double Speed)
 {
@@ -126,7 +126,7 @@ CAN_Msg_t Direct_Drive_motor(int16_t RSpeed, int16_t LSpeed)
  **/
 /* -------------------------------- end -------------------------------- */
 
-void driver_speed(int32_t speed, uint8_t driverID)
+void driver_speed(int16_t speed, uint8_t driverID)
 {
 	txSpeedMsg[0] = 0x23;
 	txSpeedMsg[1] = 0x00;

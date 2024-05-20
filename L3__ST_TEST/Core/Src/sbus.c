@@ -44,7 +44,7 @@ void sbus_parse(uint8_t* bytes,uint8_t len)
 			controlFlag = sbusCont;
 			osSemaphoreRelease(SBUS_RUN_SempHandle);
 		}
-		else if(SBUS_CH.CH10 == 1801)
+		else if(SBUS_CH.CH6 == 1801)
 		{
 			controlFlag = NALCont;
 		}

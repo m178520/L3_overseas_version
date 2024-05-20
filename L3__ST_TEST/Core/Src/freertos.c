@@ -517,11 +517,12 @@ void Device_Run_task(void *argument)
 	uint32_t uxBits;
 	osStatus_t err;
 	NAV_output_t NAV_output = {0};
+	CAN_Msg_t    CAN_Msg = {0};
   /* Infinite loop */
   for(;;)
   {
 		if(controlFlag == NALCont)
-		{	
+		{
 			uxBits = osEventFlagsWait(Device_Run_status_eventHandle,  BIT_1 | BIT_3 |BIT_4 | BIT_23,osFlagsWaitAll | osFlagsNoClear, 1000); //还有bit0暂时先不加入BIT_0 |  等待1s（暂时）打印不满足的条件，如果转换了sbus控制就转换模式
 		
 			if( (uxBits & ( BIT_1 | BIT_3 | BIT_4 | BIT_23))  == ( BIT_1 | BIT_3 | BIT_4 | BIT_23)) //是否满足启动的条件
@@ -529,8 +530,9 @@ void Device_Run_task(void *argument)
 				if(Device_Run_Status.Curstatus == Job_Working)                                                      //是否完成了可工作的准备
 				{
 					NAV_output = NAV_Control();
-					CAN1_send_data_apply(Direct_Drive_motor(NAV_output.RSpeed,NAV_output.LSpeed).L_Msg);
-					CAN1_send_data_apply(Direct_Drive_motor(NAV_output.RSpeed,NAV_output.LSpeed).R_Msg);
+					CAN_Msg = Direct_Drive_motor(NAV_output.RSpeed,NAV_output.LSpeed);
+					CAN1_send_data_apply(CAN_Msg.L_Msg);
+					CAN1_send_data_apply(CAN_Msg.R_Msg);
 					HAL_GPIO_TogglePin(GPIOB,GPIO_PIN_0);	
 				}
 			}
@@ -544,11 +546,13 @@ void Device_Run_task(void *argument)
 			err = osSemaphoreAcquire (SBUS_RUN_SempHandle, 1000);
 			if(err == osOK)
 			{
-				CAN1_send_data_apply(Direct_Drive_motor(SBUS_CH.RSpeed,SBUS_CH.LSpeed).L_Msg);
-				CAN1_send_data_apply(Direct_Drive_motor(SBUS_CH.RSpeed,SBUS_CH.LSpeed).R_Msg);
+				CAN_Msg = Direct_Drive_motor(SBUS_CH.RSpeed,SBUS_CH.LSpeed);
+				CAN1_send_data_apply(CAN_Msg.L_Msg);
+				CAN1_send_data_apply(CAN_Msg.R_Msg);
 				HAL_GPIO_TogglePin(GPIOB,GPIO_PIN_0);	
 			}
 		}
+		osDelay(1);
   }
   /* USER CODE END Device_Run_task */
 }
@@ -873,12 +877,13 @@ void VCU_send_task(void *argument)
 				CAN1_fifo.usTxRead = 0;
 			}
 			CAN1_fifo.usTxLen--;
+			osDelay(6);
 		}
 		else
 		{
 			can_SendPacket((uint8_t *)Direct_Drive_motor(0, 0).L_Msg,DRIVEID);
 			can_SendPacket((uint8_t *)Direct_Drive_motor(0, 0).R_Msg,DRIVEID);
-			osDelay(10);
+			osDelay(25);
 		}
 		/*退出临界区*/
 		taskEXIT_CRITICAL();
@@ -951,7 +956,7 @@ void SBUS_Parse_task(void *argument)
 			
 			sbus_parse(USART3RxData[UART3_fifo.usRxRead],Recv_Len);
 			
-//			memset(&USART3RxData[UART3_fifo.usRxRead],0,Recv_Len);
+			memset(&USART3RxData[UART3_fifo.usRxRead],0,Recv_Len);
 			if (++UART3_fifo.usRxRead >= UART3_fifo.usRxBufSize)
 			{
 				UART3_fifo.usRxRead = 0;

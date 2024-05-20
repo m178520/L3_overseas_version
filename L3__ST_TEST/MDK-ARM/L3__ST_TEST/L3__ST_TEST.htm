@@ -3,9 +3,9 @@
 <title>Static Call Graph - [L3__ST_TEST\L3__ST_TEST.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image L3__ST_TEST\L3__ST_TEST.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Sun May 19 11:22:30 2024
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Sun May 19 16:10:23 2024
 <BR><P>
-<H3>Maximum Stack Usage =       2032 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =       2024 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
 Device_Run_task &rArr; NAV_Control &rArr; pointToline_distance &rArr; GPStoXY &rArr; geod_inverse &rArr; geod_geninverse &rArr; geod_geninverse_int &rArr; Lambda12 &rArr; Lengths &rArr; C2f
 <P>
@@ -708,7 +708,7 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = __aeabi_memcpy
 </UL>
 <BR>[Called By]<UL><LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usart1_send_data_apply
-<LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Direct_Drive_motor
+<LI><a href="#[10a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Direct_Drive_motor
 <LI><a href="#[1ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sbus_parse
 <LI><a href="#[25a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvCopyDataToQueue
 <LI><a href="#[259]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvCopyDataFromQueue
@@ -720,7 +720,7 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[12e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPStoXY
 <LI><a href="#[1c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pointToline_distance
-<LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NAV_Control
+<LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NAV_Control
 <LI><a href="#[14e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_FDCAN_Init
 </UL>
 
@@ -750,6 +750,7 @@ Global Symbols
 <LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usart1_send_data_apply
 <LI><a href="#[12d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI1_GPS_data
 <LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;VCU_REC_task
+<LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SBUS_Parse_task
 <LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPS_REC_task
 <LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EC600U_REC_task
 <LI><a href="#[1e2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_HTTP_Authen_data
@@ -762,7 +763,7 @@ Global Symbols
 <LI><a href="#[1ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sbus_parse
 <LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;waypoints_Parse
 <LI><a href="#[1c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pointToline_distance
-<LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NAV_Control
+<LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NAV_Control
 <LI><a href="#[191]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_MspInit
 <LI><a href="#[185]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UARTEx_RxEventCallback
 <LI><a href="#[174]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_MspInit
@@ -1118,7 +1119,7 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32h753xx.o(RESET)
 </UL>
-<P><STRONG><a name="[109]"></a>CAN1_send_data_apply</STRONG> (Thumb, 50 bytes, Stack size 0 bytes, fdcan.o(i.CAN1_send_data_apply))
+<P><STRONG><a name="[10b]"></a>CAN1_send_data_apply</STRONG> (Thumb, 50 bytes, Stack size 0 bytes, fdcan.o(i.CAN1_send_data_apply))
 <BR><BR>[Called By]<UL><LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Device_Run_task
 </UL>
 
@@ -1153,15 +1154,16 @@ Global Symbols
 <P><STRONG><a name="[b]"></a>DebugMon_Handler</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, stm32h7xx_it.o(i.DebugMon_Handler))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32h753xx.o(RESET)
 </UL>
-<P><STRONG><a name="[ac]"></a>Device_Run_task</STRONG> (Thumb, 248 bytes, Stack size 56 bytes, freertos.o(i.Device_Run_task))
-<BR><BR>[Stack]<UL><LI>Max Depth = 2032<LI>Call Chain = Device_Run_task &rArr; NAV_Control &rArr; pointToline_distance &rArr; GPStoXY &rArr; geod_inverse &rArr; geod_geninverse &rArr; geod_geninverse_int &rArr; Lambda12 &rArr; Lengths &rArr; C2f
+<P><STRONG><a name="[ac]"></a>Device_Run_task</STRONG> (Thumb, 224 bytes, Stack size 48 bytes, freertos.o(i.Device_Run_task))
+<BR><BR>[Stack]<UL><LI>Max Depth = 2024<LI>Call Chain = Device_Run_task &rArr; NAV_Control &rArr; pointToline_distance &rArr; GPStoXY &rArr; geod_inverse &rArr; geod_geninverse &rArr; geod_geninverse_int &rArr; Lambda12 &rArr; Lengths &rArr; C2f
 </UL>
-<BR>[Calls]<UL><LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Direct_Drive_motor
-<LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NAV_Control
+<BR>[Calls]<UL><LI><a href="#[10a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Direct_Drive_motor
+<LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NAV_Control
 <LI><a href="#[f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osSemaphoreAcquire
-<LI><a href="#[10b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osEventFlagsWait
-<LI><a href="#[10a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_TogglePin
-<LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN1_send_data_apply
+<LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osEventFlagsWait
+<LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
+<LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_TogglePin
+<LI><a href="#[10b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN1_send_data_apply
 <LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> freertos.o(i.MX_FREERTOS_Init)
@@ -1171,15 +1173,15 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osEventFlagsSet
 <LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;waypoints_Parse
-<LI><a href="#[10b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osEventFlagsWait
-<LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osEventFlagsClear
-<LI><a href="#[10e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
-<LI><a href="#[10a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_TogglePin
+<LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osEventFlagsWait
+<LI><a href="#[10e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osEventFlagsClear
+<LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
+<LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_TogglePin
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> freertos.o(i.MX_FREERTOS_Init)
 </UL>
-<P><STRONG><a name="[108]"></a>Direct_Drive_motor</STRONG> (Thumb, 438 bytes, Stack size 72 bytes, motor.o(i.Direct_Drive_motor))
-<BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = Direct_Drive_motor &rArr; driver_speed
+<P><STRONG><a name="[10a]"></a>Direct_Drive_motor</STRONG> (Thumb, 448 bytes, Stack size 80 bytes, motor.o(i.Direct_Drive_motor))
+<BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = Direct_Drive_motor &rArr; driver_speed
 </UL>
 <BR>[Calls]<UL><LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;driver_speed
 <LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sbus_to_range
@@ -1196,7 +1198,7 @@ Global Symbols
 <LI><a href="#[116]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usart1_rec_data_apply
 <LI><a href="#[115]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osMessageQueueGet
 <LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osEventFlagsGet
-<LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osEventFlagsClear
+<LI><a href="#[10e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osEventFlagsClear
 <LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UARTEx_ReceiveToIdle_DMA
 <LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 <LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr
@@ -1207,7 +1209,7 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 136<LI>Call Chain = EC600U_SEND_task &rArr; osMessageQueueGet &rArr; xQueueReceive &rArr; xTaskResumeAll &rArr; xTaskIncrementTick
 </UL>
 <BR>[Calls]<UL><LI><a href="#[115]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osMessageQueueGet
-<LI><a href="#[10e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
+<LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
 <LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_Transmit_DMA
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> freertos.o(i.MX_FREERTOS_Init)
@@ -1307,7 +1309,7 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osEventFlagsSet
 <LI><a href="#[115]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osMessageQueueGet
-<LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osEventFlagsClear
+<LI><a href="#[10e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osEventFlagsClear
 <LI><a href="#[12d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI1_GPS_data
 <LI><a href="#[12c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_Receive_DMA
 <LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
@@ -1324,7 +1326,7 @@ Global Symbols
 <LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_cos
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pointToline_distance
-<LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NAV_Control
+<LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NAV_Control
 </UL>
 
 <P><STRONG><a name="[132]"></a>HAL_DMA_Abort</STRONG> (Thumb, 880 bytes, Stack size 40 bytes, stm32h7xx_hal_dma.o(i.HAL_DMA_Abort))
@@ -1545,7 +1547,7 @@ Global Symbols
 <LI><a href="#[14f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_FDCAN_MspInit
 </UL>
 
-<P><STRONG><a name="[10a]"></a>HAL_GPIO_TogglePin</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, stm32h7xx_hal_gpio.o(i.HAL_GPIO_TogglePin))
+<P><STRONG><a name="[10c]"></a>HAL_GPIO_TogglePin</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, stm32h7xx_hal_gpio.o(i.HAL_GPIO_TogglePin))
 <BR><BR>[Called By]<UL><LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;StartDefaultTask
 <LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Device_unusual_task
 <LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Device_Run_task
@@ -2067,7 +2069,7 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;StringToObject
 <LI><a href="#[115]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osMessageQueueGet
-<LI><a href="#[10b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osEventFlagsWait
+<LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osEventFlagsWait
 <LI><a href="#[19c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HTTP_updateRoute_Request
 <LI><a href="#[198]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HTTP_jobStart_Request
 <LI><a href="#[199]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HTTP_jobPause_Request
@@ -2298,7 +2300,7 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32h753xx.o(RESET)
 </UL>
-<P><STRONG><a name="[10c]"></a>NAV_Control</STRONG> (Thumb, 528 bytes, Stack size 360 bytes, nav.o(i.NAV_Control))
+<P><STRONG><a name="[109]"></a>NAV_Control</STRONG> (Thumb, 528 bytes, Stack size 360 bytes, nav.o(i.NAV_Control))
 <BR><BR>[Stack]<UL><LI>Max Depth = 1976<LI>Call Chain = NAV_Control &rArr; pointToline_distance &rArr; GPStoXY &rArr; geod_inverse &rArr; geod_geninverse &rArr; geod_geninverse_int &rArr; Lambda12 &rArr; Lengths &rArr; C2f
 </UL>
 <BR>[Calls]<UL><LI><a href="#[12e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPStoXY
@@ -2360,7 +2362,7 @@ Global Symbols
 <P><STRONG><a name="[b0]"></a>Power_Check_task</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, freertos.o(i.Power_Check_task))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = Power_Check_task &rArr; osDelay &rArr; vTaskDelay &rArr; xTaskResumeAll &rArr; xTaskIncrementTick
 </UL>
-<BR>[Calls]<UL><LI><a href="#[10e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
+<BR>[Calls]<UL><LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> freertos.o(i.MX_FREERTOS_Init)
 </UL>
@@ -2372,13 +2374,14 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[1eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_MQTT_data
 </UL>
 
-<P><STRONG><a name="[b4]"></a>SBUS_Parse_task</STRONG> (Thumb, 96 bytes, Stack size 8 bytes, freertos.o(i.SBUS_Parse_task))
-<BR><BR>[Stack]<UL><LI>Max Depth = 184<LI>Call Chain = SBUS_Parse_task &rArr; sbus_parse &rArr; osSemaphoreRelease &rArr; xQueueGenericSend &rArr; xTaskResumeAll &rArr; xTaskIncrementTick
+<P><STRONG><a name="[b4]"></a>SBUS_Parse_task</STRONG> (Thumb, 114 bytes, Stack size 8 bytes, freertos.o(i.SBUS_Parse_task))
+<BR><BR>[Stack]<UL><LI>Max Depth = 176<LI>Call Chain = SBUS_Parse_task &rArr; sbus_parse &rArr; osSemaphoreRelease &rArr; xQueueGenericSend &rArr; xTaskResumeAll &rArr; xTaskIncrementTick
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sbus_parse
 <LI><a href="#[115]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osMessageQueueGet
 <LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UARTEx_ReceiveToIdle_DMA
 <LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> freertos.o(i.MX_FREERTOS_Init)
 </UL>
@@ -2395,7 +2398,7 @@ Global Symbols
 <LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vPortExitCritical
 <LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vPortEnterCritical
 <LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osEventFlagsGet
-<LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osEventFlagsClear
+<LI><a href="#[10e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osEventFlagsClear
 <LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 <LI><a href="#[1a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strcpy
 <LI><a href="#[1d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strcmp
@@ -2414,8 +2417,8 @@ Global Symbols
 <P><STRONG><a name="[a9]"></a>StartDefaultTask</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, freertos.o(i.StartDefaultTask))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = StartDefaultTask &rArr; osDelay &rArr; vTaskDelay &rArr; xTaskResumeAll &rArr; xTaskIncrementTick
 </UL>
-<BR>[Calls]<UL><LI><a href="#[10e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
-<LI><a href="#[10a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_TogglePin
+<BR>[Calls]<UL><LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
+<LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_TogglePin
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> freertos.o(i.MX_FREERTOS_Init)
 </UL>
@@ -2478,7 +2481,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[1c5]"></a>Terminal_decision</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, nav.o(i.Terminal_decision))
-<BR><BR>[Called By]<UL><LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NAV_Control
+<BR><BR>[Called By]<UL><LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NAV_Control
 </UL>
 
 <P><STRONG><a name="[193]"></a>UART_AdvFeatureConfig</STRONG> (Thumb, 200 bytes, Stack size 0 bytes, stm32h7xx_hal_uart.o(i.UART_AdvFeatureConfig))
@@ -2553,7 +2556,7 @@ Global Symbols
 <LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;insert_str
 <LI><a href="#[1cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cJSON_IsObject
 <LI><a href="#[1a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cJSON_GetObjectItemCaseSensitive
-<LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osEventFlagsClear
+<LI><a href="#[10e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osEventFlagsClear
 <LI><a href="#[1e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cJSON_IsNumber
 <LI><a href="#[1b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MQTT_open
 <LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
@@ -2648,7 +2651,7 @@ Global Symbols
 <LI><a href="#[1d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cJSON_IsString
 <LI><a href="#[1cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cJSON_IsObject
 <LI><a href="#[1a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cJSON_GetObjectItemCaseSensitive
-<LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osEventFlagsClear
+<LI><a href="#[10e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osEventFlagsClear
 <LI><a href="#[12c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_Receive_DMA
 <LI><a href="#[1e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cJSON_IsNumber
 <LI><a href="#[1ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_Base_Stop_IT
@@ -2678,13 +2681,13 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> freertos.o(i.MX_FREERTOS_Init)
 </UL>
-<P><STRONG><a name="[b2]"></a>VCU_send_task</STRONG> (Thumb, 130 bytes, Stack size 32 bytes, freertos.o(i.VCU_send_task))
-<BR><BR>[Stack]<UL><LI>Max Depth = 116<LI>Call Chain = VCU_send_task &rArr; can_SendPacket &rArr; HAL_FDCAN_AddMessageToTxFifoQ &rArr; FDCAN_CopyMessageToRAM
+<P><STRONG><a name="[b2]"></a>VCU_send_task</STRONG> (Thumb, 136 bytes, Stack size 32 bytes, freertos.o(i.VCU_send_task))
+<BR><BR>[Stack]<UL><LI>Max Depth = 120<LI>Call Chain = VCU_send_task &rArr; Direct_Drive_motor &rArr; driver_speed
 </UL>
-<BR>[Calls]<UL><LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Direct_Drive_motor
+<BR>[Calls]<UL><LI><a href="#[10a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Direct_Drive_motor
 <LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vPortExitCritical
 <LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vPortEnterCritical
-<LI><a href="#[10e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
+<LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
 <LI><a href="#[1ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;can_SendPacket
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> freertos.o(i.MX_FREERTOS_Init)
@@ -2706,7 +2709,7 @@ Global Symbols
 <LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;StringToObject
 <LI><a href="#[116]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usart1_rec_data_apply
 <LI><a href="#[1ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Imei_data
-<LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NAV_Control
+<LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NAV_Control
 <LI><a href="#[12d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI1_GPS_data
 <LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;APP_Info_Submit
 <LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;VCU_REC_task
@@ -2928,7 +2931,7 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__strtod_int
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tracking_control_Arith
-<LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NAV_Control
+<LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NAV_Control
 <LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;APP_Info_Submit
 </UL>
 
@@ -3173,7 +3176,7 @@ Global Symbols
 <P><STRONG><a name="[112]"></a>driver_speed</STRONG> (Thumb, 30 bytes, Stack size 8 bytes, motor.o(i.driver_speed))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = driver_speed
 </UL>
-<BR>[Called By]<UL><LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Direct_Drive_motor
+<BR>[Called By]<UL><LI><a href="#[10a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Direct_Drive_motor
 </UL>
 
 <P><STRONG><a name="[1f4]"></a>fabs</STRONG> (Thumb, 24 bytes, Stack size 8 bytes, fabs.o(i.fabs))
@@ -3311,7 +3314,7 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> deal_string.o(.data)
 </UL>
-<P><STRONG><a name="[10e]"></a>osDelay</STRONG> (Thumb, 28 bytes, Stack size 8 bytes, cmsis_os2.o(i.osDelay))
+<P><STRONG><a name="[10d]"></a>osDelay</STRONG> (Thumb, 28 bytes, Stack size 8 bytes, cmsis_os2.o(i.osDelay))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = osDelay &rArr; vTaskDelay &rArr; xTaskResumeAll &rArr; xTaskIncrementTick
 </UL>
 <BR>[Calls]<UL><LI><a href="#[224]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskDelay
@@ -3321,9 +3324,10 @@ Global Symbols
 <LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Power_Check_task
 <LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EC600U_SEND_task
 <LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Device_unusual_task
+<LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Device_Run_task
 </UL>
 
-<P><STRONG><a name="[10d]"></a>osEventFlagsClear</STRONG> (Thumb, 66 bytes, Stack size 16 bytes, cmsis_os2.o(i.osEventFlagsClear))
+<P><STRONG><a name="[10e]"></a>osEventFlagsClear</STRONG> (Thumb, 66 bytes, Stack size 16 bytes, cmsis_os2.o(i.osEventFlagsClear))
 <BR><BR>[Stack]<UL><LI>Max Depth = 120<LI>Call Chain = osEventFlagsClear &rArr; xEventGroupClearBitsFromISR &rArr; xTimerPendFunctionCallFromISR &rArr; xQueueGenericSendFromISR &rArr; prvCopyDataToQueue &rArr; xTaskPriorityDisinherit
 </UL>
 <BR>[Calls]<UL><LI><a href="#[225]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xEventGroupGetBitsFromISR
@@ -3373,7 +3377,7 @@ Global Symbols
 <LI><a href="#[1e2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_HTTP_Authen_data
 </UL>
 
-<P><STRONG><a name="[10b]"></a>osEventFlagsWait</STRONG> (Thumb, 104 bytes, Stack size 24 bytes, cmsis_os2.o(i.osEventFlagsWait))
+<P><STRONG><a name="[108]"></a>osEventFlagsWait</STRONG> (Thumb, 104 bytes, Stack size 24 bytes, cmsis_os2.o(i.osEventFlagsWait))
 <BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = osEventFlagsWait &rArr; xEventGroupWaitBits &rArr; xTaskResumeAll &rArr; xTaskIncrementTick
 </UL>
 <BR>[Calls]<UL><LI><a href="#[22c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xEventGroupWaitBits
@@ -3508,7 +3512,7 @@ Global Symbols
 <LI><a href="#[131]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
 <LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sqrt
 </UL>
-<BR>[Called By]<UL><LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NAV_Control
+<BR>[Called By]<UL><LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NAV_Control
 </UL>
 
 <P><STRONG><a name="[223]"></a>pvPortMalloc</STRONG> (Thumb, 214 bytes, Stack size 24 bytes, heap_4.o(i.pvPortMalloc))
@@ -3533,8 +3537,8 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[25e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvInitialiseNewTask
 </UL>
 
-<P><STRONG><a name="[1ce]"></a>sbus_parse</STRONG> (Thumb, 394 bytes, Stack size 56 bytes, sbus.o(i.sbus_parse))
-<BR><BR>[Stack]<UL><LI>Max Depth = 176<LI>Call Chain = sbus_parse &rArr; osSemaphoreRelease &rArr; xQueueGenericSend &rArr; xTaskResumeAll &rArr; xTaskIncrementTick
+<P><STRONG><a name="[1ce]"></a>sbus_parse</STRONG> (Thumb, 394 bytes, Stack size 48 bytes, sbus.o(i.sbus_parse))
+<BR><BR>[Stack]<UL><LI>Max Depth = 168<LI>Call Chain = sbus_parse &rArr; osSemaphoreRelease &rArr; xQueueGenericSend &rArr; xTaskResumeAll &rArr; xTaskIncrementTick
 </UL>
 <BR>[Calls]<UL><LI><a href="#[183]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osSemaphoreRelease
 <LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr4
@@ -3544,7 +3548,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[111]"></a>sbus_to_range</STRONG> (Thumb, 30 bytes, Stack size 0 bytes, sbus.o(i.sbus_to_range))
-<BR><BR>[Called By]<UL><LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Direct_Drive_motor
+<BR><BR>[Called By]<UL><LI><a href="#[10a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Direct_Drive_motor
 </UL>
 
 <P><STRONG><a name="[200]"></a>sqrt</STRONG> (Thumb, 106 bytes, Stack size 24 bytes, sqrt.o(i.sqrt))
@@ -3574,7 +3578,7 @@ Global Symbols
 <LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_cos
 <LI><a href="#[1f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan
 </UL>
-<BR>[Called By]<UL><LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NAV_Control
+<BR>[Called By]<UL><LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NAV_Control
 </UL>
 
 <P><STRONG><a name="[116]"></a>usart1_rec_data_apply</STRONG> (Thumb, 212 bytes, Stack size 16 bytes, deal_data.o(i.usart1_rec_data_apply))
@@ -3810,7 +3814,7 @@ Global Symbols
 <LI><a href="#[26a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xTaskResumeAll
 <LI><a href="#[269]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskSuspendAll
 </UL>
-<BR>[Called By]<UL><LI><a href="#[10e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
+<BR>[Called By]<UL><LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
 </UL>
 
 <P><STRONG><a name="[28a]"></a>vTaskInternalSetTimeOutState</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, tasks.o(i.vTaskInternalSetTimeOutState))
@@ -3924,7 +3928,7 @@ Global Symbols
 <LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vPortEnterCritical
 </UL>
 <BR>[Called By]<UL><LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osEventFlagsGet
-<LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osEventFlagsClear
+<LI><a href="#[10e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osEventFlagsClear
 <LI><a href="#[bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vEventGroupClearBitsCallback
 </UL>
 
@@ -3933,7 +3937,7 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[283]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xTimerPendFunctionCallFromISR
 </UL>
-<BR>[Called By]<UL><LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osEventFlagsClear
+<BR>[Called By]<UL><LI><a href="#[10e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osEventFlagsClear
 </UL>
 
 <P><STRONG><a name="[229]"></a>xEventGroupCreate</STRONG> (Thumb, 28 bytes, Stack size 16 bytes, event_groups.o(i.xEventGroupCreate))
@@ -3955,7 +3959,7 @@ Global Symbols
 
 <P><STRONG><a name="[225]"></a>xEventGroupGetBitsFromISR</STRONG> (Thumb, 26 bytes, Stack size 0 bytes, event_groups.o(i.xEventGroupGetBitsFromISR))
 <BR><BR>[Called By]<UL><LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osEventFlagsGet
-<LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osEventFlagsClear
+<LI><a href="#[10e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osEventFlagsClear
 </UL>
 
 <P><STRONG><a name="[22b]"></a>xEventGroupSetBits</STRONG> (Thumb, 160 bytes, Stack size 24 bytes, event_groups.o(i.xEventGroupSetBits))
@@ -3989,7 +3993,7 @@ Global Symbols
 <LI><a href="#[27c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskPlaceOnUnorderedEventList
 <LI><a href="#[285]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uxTaskResetEventItemValue
 </UL>
-<BR>[Called By]<UL><LI><a href="#[10b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osEventFlagsWait
+<BR>[Called By]<UL><LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osEventFlagsWait
 </UL>
 
 <P><STRONG><a name="[281]"></a>xPortStartScheduler</STRONG> (Thumb, 222 bytes, Stack size 16 bytes, port.o(i.xPortStartScheduler))
