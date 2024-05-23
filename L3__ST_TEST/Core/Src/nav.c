@@ -79,8 +79,8 @@ pointToline_distance_t pointToline_distance(double Vehicle_lat,double Vehicle_lo
 	double pose_direction = (Vehicle_XY.y - Endpoint_XY.y) / (Vehicle_XY.x - Endpoint_XY.x);
 	double direction_err = pose_direction - start_stop_line.k;
 	
-	if (direction_err < 0)      pointToline_info.direct = VEHICLE_DIRECT_LEFT;
-	else                        pointToline_info.direct = VEHICLE_DIRECT_RIGHT;
+	if (direction_err < 0)      pointToline_info.direct = VEHICLE_DIRECT_RIGHT;
+	else                        pointToline_info.direct = VEHICLE_DIRECT_LEFT;
 
 	return pointToline_info;
 }
@@ -213,8 +213,8 @@ NAV_output_t NAV_Control()
 		
 		/*驱动控制*/
 		//Speed目前手动给值
-		NAV_output.RSpeed =  10 + Angle;
-		NAV_output.LSpeed =  10 - Angle;
+		NAV_output.RSpeed =  60 + Angle;
+		NAV_output.LSpeed =  60 - Angle;
 //		/*进度计算*/
 //		process = pointToline_info.VehicleToStart/ pointToline_info.StartToTerminal;
 	}
@@ -229,7 +229,7 @@ NAV_output_t NAV_Control()
 			waypoints_run_status.current_fromindex++;
 		}
 		else  waypoints_run_status.current_toindex++;
-		
+		printf("方向量：%f,方向：%d\r\n",tracking_control.value,tracking_control.direct);
 		Vehicle_To_Distance_Angle_flag = 0;
 	}
 	return NAV_output;
