@@ -114,6 +114,7 @@ tracking_control_t tracking_control_Arith(PID_TypeDef *PID_InitStruct,pointTolin
 		/*将车辆点至直线的垂足坐标求出*/
 		/*将过车辆点的垂线求出*/
 		Line_straight_param_t vertical_line_fun_param = vertical_line_fun(info.origin_Vehicle_XY.x,info.origin_Vehicle_XY.y,info.origin_start_stop_line_param.k,info.origin_start_stop_line_param.b);
+		/*求出垂足*/	
 		Line_inter_point_t    Line_inter_point        = Line_inter_point_math(info.origin_start_stop_line_param.k,info.origin_start_stop_line_param.b,vertical_line_fun_param.k,vertical_line_fun_param.b);
 		/*将垂足至三角形边长为一定值的坐标求出*/
 		if(info.Endpoint_XY.x >=0)
@@ -144,8 +145,10 @@ tracking_control_t tracking_control_Arith(PID_TypeDef *PID_InitStruct,pointTolin
 			target_degree  = degree;
 		}
 		
+		/*将x坐标轴为0度变换为将y周正方向为0度*/
 		target_degree = -1.0 * target_degree +90;
 		
+		/* */
 		double gnss_Angle = strtod(gnss.CourseAngle,NULL);
 		if(gnss_Angle > 180)
 		{
@@ -155,16 +158,8 @@ tracking_control_t tracking_control_Arith(PID_TypeDef *PID_InitStruct,pointTolin
 		double err = gnss_Angle - target_degree;
 		double fabs_err = fabs(err);
 		
-		/*偏离航信过大，就打满方向*/
-		if(fabs_err > POINTTOLINE_THRES  )
-		{
-			tracking_control.value = 180;   /*0-180*/
-		}
-		/*偏离航线不大，使用点至线的距离求解个方向量*/
-		else
-		{
-			tracking_control.value = fabs_err ;  //归一化
-		}
+		tracking_control.value = fabs_err ;  //归一化
+		
 		/*确定方向*/
 		if(err > 0)          tracking_control.direct = VEHICLE_DIRECT_LEFT;
 		else if(err < 0 )    tracking_control.direct = VEHICLE_DIRECT_RIGHT;
@@ -172,7 +167,7 @@ tracking_control_t tracking_control_Arith(PID_TypeDef *PID_InitStruct,pointTolin
 		
 		if(fabs_err > 180)  
 		{
-			tracking_control.direct =  ~tracking_control.direct;
+			tracking_control.direct =  -tracking_control.direct;
 			tracking_control.value  =  360 - fabs_err; /*0-180*/
 		}
 		
@@ -218,8 +213,8 @@ NAV_output_t NAV_Control()
 		
 		/*驱动控制*/
 		//Speed目前手动给值
-		NAV_output.RSpeed =  110 + Angle;
-		NAV_output.LSpeed =  110 - Angle;
+		NAV_output.RSpeed =  10 + Angle;
+		NAV_output.LSpeed =  10 - Angle;
 //		/*进度计算*/
 //		process = pointToline_info.VehicleToStart/ pointToline_info.StartToTerminal;
 	}
@@ -237,8 +232,6 @@ NAV_output_t NAV_Control()
 		
 		Vehicle_To_Distance_Angle_flag = 0;
 	}
-//	printf("点至线的距离：%f,方向：%d\r\n",pointToline_info.pointToline,pointToline_info.direct);
-	printf("方向量：%f,方向：%d\r\n",tracking_control.value,tracking_control.direct);
 	return NAV_output;
 }
 

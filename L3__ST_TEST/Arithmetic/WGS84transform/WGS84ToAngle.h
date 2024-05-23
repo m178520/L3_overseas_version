@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <math.h>
 
+#define PI 3.14159265
+
 typedef struct {
 	double length;
 	double origin_lat;

@@ -538,6 +538,7 @@ void Device_Run_task(void *argument)
 				if(Device_Run_Status.Curstatus == Job_Working)                                                      //是否完成了可工作的准备
 				{
 					NAV_output = NAV_Control();
+					printf("左轮：%f,右轮：%f\r\n",NAV_output.LSpeed,NAV_output.RSpeed);
 					CAN_Msg = Direct_Drive_motor(NAV_output.RSpeed,NAV_output.LSpeed);
 					CAN1_send_data_apply(CAN_Msg.L_Msg);
 					CAN1_send_data_apply(CAN_Msg.R_Msg);

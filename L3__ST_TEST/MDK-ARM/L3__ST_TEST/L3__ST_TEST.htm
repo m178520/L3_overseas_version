@@ -3,9 +3,9 @@
 <title>Static Call Graph - [L3__ST_TEST\L3__ST_TEST.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image L3__ST_TEST\L3__ST_TEST.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Thu May 23 13:34:56 2024
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Thu May 23 15:51:59 2024
 <BR><P>
-<H3>Maximum Stack Usage =       2024 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =       2048 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
 Device_Run_task &rArr; NAV_Control &rArr; pointToline_distance &rArr; GPStoXY &rArr; geod_inverse &rArr; geod_geninverse &rArr; geod_geninverse_int &rArr; Lambda12 &rArr; Lengths &rArr; C2f
 <P>
@@ -1158,8 +1158,8 @@ Global Symbols
 <P><STRONG><a name="[b]"></a>DebugMon_Handler</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, stm32h7xx_it.o(i.DebugMon_Handler))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32h753xx.o(RESET)
 </UL>
-<P><STRONG><a name="[ac]"></a>Device_Run_task</STRONG> (Thumb, 224 bytes, Stack size 48 bytes, freertos.o(i.Device_Run_task))
-<BR><BR>[Stack]<UL><LI>Max Depth = 2024<LI>Call Chain = Device_Run_task &rArr; NAV_Control &rArr; pointToline_distance &rArr; GPStoXY &rArr; geod_inverse &rArr; geod_geninverse &rArr; geod_geninverse_int &rArr; Lambda12 &rArr; Lengths &rArr; C2f
+<P><STRONG><a name="[ac]"></a>Device_Run_task</STRONG> (Thumb, 250 bytes, Stack size 64 bytes, freertos.o(i.Device_Run_task))
+<BR><BR>[Stack]<UL><LI>Max Depth = 2048<LI>Call Chain = Device_Run_task &rArr; NAV_Control &rArr; pointToline_distance &rArr; GPStoXY &rArr; geod_inverse &rArr; geod_geninverse &rArr; geod_geninverse_int &rArr; Lambda12 &rArr; Lengths &rArr; C2f
 </UL>
 <BR>[Calls]<UL><LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Direct_Drive_motor
 <LI><a href="#[10b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NAV_Control
@@ -1321,8 +1321,8 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> freertos.o(i.MX_FREERTOS_Init)
 </UL>
-<P><STRONG><a name="[12f]"></a>GPStoXY</STRONG> (Thumb, 88 bytes, Stack size 72 bytes, wgs84toangle.o(i.GPStoXY))
-<BR><BR>[Stack]<UL><LI>Max Depth = 1336<LI>Call Chain = GPStoXY &rArr; geod_inverse &rArr; geod_geninverse &rArr; geod_geninverse_int &rArr; Lambda12 &rArr; Lengths &rArr; C2f
+<P><STRONG><a name="[12f]"></a>GPStoXY</STRONG> (Thumb, 116 bytes, Stack size 80 bytes, wgs84toangle.o(i.GPStoXY))
+<BR><BR>[Stack]<UL><LI>Max Depth = 1344<LI>Call Chain = GPStoXY &rArr; geod_inverse &rArr; geod_geninverse &rArr; geod_geninverse_int &rArr; Lambda12 &rArr; Lengths &rArr; C2f
 </UL>
 <BR>[Calls]<UL><LI><a href="#[132]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
 <LI><a href="#[131]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sin
@@ -2304,14 +2304,13 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32h753xx.o(RESET)
 </UL>
-<P><STRONG><a name="[10b]"></a>NAV_Control</STRONG> (Thumb, 528 bytes, Stack size 360 bytes, nav.o(i.NAV_Control))
-<BR><BR>[Stack]<UL><LI>Max Depth = 1976<LI>Call Chain = NAV_Control &rArr; pointToline_distance &rArr; GPStoXY &rArr; geod_inverse &rArr; geod_geninverse &rArr; geod_geninverse_int &rArr; Lambda12 &rArr; Lengths &rArr; C2f
+<P><STRONG><a name="[10b]"></a>NAV_Control</STRONG> (Thumb, 530 bytes, Stack size 360 bytes, nav.o(i.NAV_Control))
+<BR><BR>[Stack]<UL><LI>Max Depth = 1984<LI>Call Chain = NAV_Control &rArr; pointToline_distance &rArr; GPStoXY &rArr; geod_inverse &rArr; geod_geninverse &rArr; geod_geninverse_int &rArr; Lambda12 &rArr; Lengths &rArr; C2f
 </UL>
 <BR>[Calls]<UL><LI><a href="#[12f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPStoXY
 <LI><a href="#[1c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tracking_control_Arith
 <LI><a href="#[1c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pointToline_distance
 <LI><a href="#[1c5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Terminal_decision
-<LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 <LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr4
 <LI><a href="#[132]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
 <LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_strtod
@@ -2712,7 +2711,6 @@ Global Symbols
 <LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;StringToObject
 <LI><a href="#[117]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usart1_rec_data_apply
 <LI><a href="#[1ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Imei_data
-<LI><a href="#[10b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NAV_Control
 <LI><a href="#[12e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI1_GPS_data
 <LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;APP_Info_Submit
 <LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;VCU_REC_task
@@ -3509,7 +3507,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[1c4]"></a>pointToline_distance</STRONG> (Thumb, 312 bytes, Stack size 280 bytes, nav.o(i.pointToline_distance))
-<BR><BR>[Stack]<UL><LI>Max Depth = 1616<LI>Call Chain = pointToline_distance &rArr; GPStoXY &rArr; geod_inverse &rArr; geod_geninverse &rArr; geod_geninverse_int &rArr; Lambda12 &rArr; Lengths &rArr; C2f
+<BR><BR>[Stack]<UL><LI>Max Depth = 1624<LI>Call Chain = pointToline_distance &rArr; GPStoXY &rArr; geod_inverse &rArr; geod_geninverse &rArr; geod_geninverse_int &rArr; Lambda12 &rArr; Lengths &rArr; C2f
 </UL>
 <BR>[Calls]<UL><LI><a href="#[246]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;line_fun
 <LI><a href="#[12f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPStoXY
@@ -3572,7 +3570,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[23f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_number
 </UL>
 
-<P><STRONG><a name="[1c6]"></a>tracking_control_Arith</STRONG> (Thumb, 456 bytes, Stack size 136 bytes, nav.o(i.tracking_control_Arith))
+<P><STRONG><a name="[1c6]"></a>tracking_control_Arith</STRONG> (Thumb, 436 bytes, Stack size 136 bytes, nav.o(i.tracking_control_Arith))
 <BR><BR>[Stack]<UL><LI>Max Depth = 352<LI>Call Chain = tracking_control_Arith &rArr; __hardfp_strtod &rArr; __strtod_int &rArr; _local_sscanf &rArr; _scanf_real
 </UL>
 <BR>[Calls]<UL><LI><a href="#[274]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vertical_line_fun

@@ -18,7 +18,7 @@ struct geod_geodesic g;
 WGS84_axis_t GPStoXY(double start_lat, double start_lon, double stop_lat, double stop_lon)
 {
 	WGS84_axis_t WGS84_axis;
-	double  azi1, azi2, s12;
+	double angle, azi1, azi2, s12;
 	
 	WGS84_axis.origin_lat = start_lat;
 	WGS84_axis.origin_lon = start_lon;
@@ -26,9 +26,9 @@ WGS84_axis_t GPStoXY(double start_lat, double start_lon, double stop_lat, double
 	geod_inverse(&g, start_lat,start_lon, stop_lat, stop_lon, &s12, &azi1, &azi2);
 	
 	WGS84_axis.length =  s12;
-	
-	WGS84_axis.x = s12 * sin(azi1);
-	WGS84_axis.y = s12 * cos(azi1);
+	angle = (azi1 / 180) * PI;
+	WGS84_axis.x = s12 * sin(angle);
+	WGS84_axis.y = s12 * cos(angle);
 //  printf("%.15f %.15f \n",  WGS84_axis.x, WGS84_axis.y);
 	return WGS84_axis;
 }

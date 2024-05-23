@@ -37,7 +37,7 @@ typedef struct
 
 typedef struct
 {
-	char   direct;
+	int8_t direct;
 	double value;
 }tracking_control_t;
 
@@ -66,7 +66,7 @@ typedef struct
 	WGS84_axis_t          origin_Vehicle_XY;
 	WGS84_axis_t          Endpoint_XY;
 	
-	char   direct;
+	int8_t   direct;
 	double pointToline;
 	double VehicleToStart;
 	double StartToTerminal;
