@@ -884,14 +884,16 @@ void VCU_send_task(void *argument)
 			{
 				CAN1_fifo.usTxRead = 0;
 			}
+			osDelay(3);
 		}
 		else
 		{
 			Msg = Direct_Drive_motor(0, 0);
 			can_SendPacket((uint8_t *)Msg.L_Msg,DRIVEID);
+			osDelay(3);
 			can_SendPacket((uint8_t *)Msg.R_Msg,DRIVEID);
 		}
-		
+		//下面这种方法不可用
 		//进入临界区
 //		taskENTER_CRITICAL();
 //		if(CAN1_fifo.usTxLen > 0)
