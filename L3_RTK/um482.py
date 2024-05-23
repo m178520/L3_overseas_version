@@ -12,7 +12,7 @@ from usr.test import config
 from usr.test import mqtt
 from usr.test.timer import timer
 
-GPS_SPI = SPI(0,0,8)
+GPS_SPI = SPI(0,0,3)
 SPI_Data_len = 5
 
 gnss = {

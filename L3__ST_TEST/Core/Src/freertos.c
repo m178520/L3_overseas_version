@@ -228,6 +228,11 @@ osSemaphoreId_t SBUS_RUN_SempHandle;
 const osSemaphoreAttr_t SBUS_RUN_Semp_attributes = {
   .name = "SBUS_RUN_Semp"
 };
+/* Definitions for CAN_send_semp */
+osSemaphoreId_t CAN_send_sempHandle;
+const osSemaphoreAttr_t CAN_send_semp_attributes = {
+  .name = "CAN_send_semp"
+};
 /* Definitions for Device_Run_status_event */
 osEventFlagsId_t Device_Run_status_eventHandle;
 const osEventFlagsAttr_t Device_Run_status_event_attributes = {
@@ -278,7 +283,10 @@ void MX_FREERTOS_Init(void) {
   APP_Info_Submit_SempHandle = osSemaphoreNew(1, 0, &APP_Info_Submit_Semp_attributes);
 
   /* creation of SBUS_RUN_Semp */
-  SBUS_RUN_SempHandle = osSemaphoreNew(15, 15, &SBUS_RUN_Semp_attributes);
+  SBUS_RUN_SempHandle = osSemaphoreNew(15, 0, &SBUS_RUN_Semp_attributes);
+
+  /* creation of CAN_send_semp */
+  CAN_send_sempHandle = osSemaphoreNew(15, 0, &CAN_send_semp_attributes);
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
   /* add semaphores, ... */
@@ -849,7 +857,8 @@ void GPS_REC_task(void *argument)
 void VCU_send_task(void *argument)
 {
   /* USER CODE BEGIN VCU_send_task */
-//	osStatus_t err;
+	osStatus_t err;
+	CAN_Msg_t Msg;
 //	uint16_t Send_Len;
   /* Infinite loop */
   for(;;)
@@ -865,9 +874,8 @@ void VCU_send_task(void *argument)
 //			osDelay(20);
 //		}
 		/* 查询式 can发送*/
-		//进入临界区
-		taskENTER_CRITICAL();
-		if(CAN1_fifo.usTxLen > 0)
+		err = osSemaphoreAcquire (CAN_send_sempHandle, 25);
+		if(err == osOK)
 		{
 			/* 发送信息 */
 			can_SendPacket(CAN1TxData[CAN1_fifo.usTxRead],DRIVEID);
@@ -876,17 +884,36 @@ void VCU_send_task(void *argument)
 			{
 				CAN1_fifo.usTxRead = 0;
 			}
-			CAN1_fifo.usTxLen--;
-			osDelay(6);
 		}
 		else
 		{
-			can_SendPacket((uint8_t *)Direct_Drive_motor(0, 0).L_Msg,DRIVEID);
-			can_SendPacket((uint8_t *)Direct_Drive_motor(0, 0).R_Msg,DRIVEID);
-			osDelay(25);
+			Msg = Direct_Drive_motor(0, 0);
+			can_SendPacket((uint8_t *)Msg.L_Msg,DRIVEID);
+			can_SendPacket((uint8_t *)Msg.R_Msg,DRIVEID);
 		}
-		/*退出临界区*/
-		taskEXIT_CRITICAL();
+		
+		//进入临界区
+//		taskENTER_CRITICAL();
+//		if(CAN1_fifo.usTxLen > 0)
+//		{
+//			/* 发送信息 */
+//			can_SendPacket(CAN1TxData[CAN1_fifo.usTxRead],DRIVEID);
+//			memset(CAN1TxData[CAN1_fifo.usTxRead],0,8);
+//			if (++CAN1_fifo.usTxRead >= CAN1_fifo.usTxBufSize)
+//			{
+//				CAN1_fifo.usTxRead = 0;
+//			}
+//			CAN1_fifo.usTxLen--;
+//			osDelay(6);
+//		}
+//		else
+//		{
+//			can_SendPacket((uint8_t *)Direct_Drive_motor(0, 0).L_Msg,DRIVEID);
+//			can_SendPacket((uint8_t *)Direct_Drive_motor(0, 0).R_Msg,DRIVEID);
+//			osDelay(25);
+//		}
+//		/*退出临界区*/
+//		taskEXIT_CRITICAL();
   }
   /* USER CODE END VCU_send_task */
 }

@@ -21,6 +21,8 @@
 #include "fdcan.h"
 
 /* USER CODE BEGIN 0 */
+#include "cmsis_os.h"
+
 uint8_t CAN1RxData[CAN1_Max_Rxnum_size][CAN1_Max_Rxbuf_size] = {0};
 uint8_t CAN1TxData[CAN1_Max_Txnum_size][CAN1_Max_Txbuf_size] = {0};
 
@@ -35,6 +37,8 @@ CAN_fifo_t CAN1_fifo = {
 	0,	/* 接收缓冲区写指针 */
 	0,	/* 接收缓冲区读指针 */
 };
+
+extern osSemaphoreId_t CAN_send_sempHandle;
 /* USER CODE END 0 */
 
 FDCAN_HandleTypeDef hfdcan1;
@@ -56,11 +60,11 @@ void MX_FDCAN1_Init(void)
   hfdcan1.Init.AutoRetransmission = ENABLE;
   hfdcan1.Init.TransmitPause = DISABLE;
   hfdcan1.Init.ProtocolException = ENABLE;
-  hfdcan1.Init.NominalPrescaler = 10;
+  hfdcan1.Init.NominalPrescaler = 5;
   hfdcan1.Init.NominalSyncJumpWidth = 8;
   hfdcan1.Init.NominalTimeSeg1 = 31;
   hfdcan1.Init.NominalTimeSeg2 = 8;
-  hfdcan1.Init.DataPrescaler = 10;
+  hfdcan1.Init.DataPrescaler = 5;
   hfdcan1.Init.DataSyncJumpWidth = 8;
   hfdcan1.Init.DataTimeSeg1 = 31;
   hfdcan1.Init.DataTimeSeg2 = 8;
@@ -214,7 +218,7 @@ void CAN1_send_data_apply(int8_t* data)
 	}
 	if (CAN1_fifo.usTxLen < CAN1_fifo.usTxBufSize)
 	{
-		CAN1_fifo.usTxLen++;
+		osSemaphoreRelease (CAN_send_sempHandle);
 	}
 }
 

@@ -400,11 +400,6 @@
               <FilePath>..\Core\Src\nav.c</FilePath>
             </File>
             <File>
-              <FileName>sbus.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\Src\sbus.c</FilePath>
-            </File>
-            <File>
               <FileName>motor.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Core\Src\motor.c</FilePath>
@@ -418,6 +413,11 @@
               <FileName>deal_string.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Core\Src\deal_string.c</FilePath>
+            </File>
+            <File>
+              <FileName>sbus.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\sbus.c</FilePath>
             </File>
             <File>
               <FileName>main.c</FileName>
