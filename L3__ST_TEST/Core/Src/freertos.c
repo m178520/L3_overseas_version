@@ -283,10 +283,10 @@ void MX_FREERTOS_Init(void) {
   APP_Info_Submit_SempHandle = osSemaphoreNew(1, 0, &APP_Info_Submit_Semp_attributes);
 
   /* creation of SBUS_RUN_Semp */
-  SBUS_RUN_SempHandle = osSemaphoreNew(15, 15, &SBUS_RUN_Semp_attributes);
+  SBUS_RUN_SempHandle = osSemaphoreNew(15, 0, &SBUS_RUN_Semp_attributes);
 
   /* creation of CAN_send_semp */
-  CAN_send_sempHandle = osSemaphoreNew(15, 15, &CAN_send_semp_attributes);
+  CAN_send_sempHandle = osSemaphoreNew(15, 0, &CAN_send_semp_attributes);
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
   /* add semaphores, ... */

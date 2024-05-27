@@ -130,6 +130,28 @@ void HAL_ResumeTick(void)
   /* Enable TIM7 Update interrupt */
   __HAL_TIM_ENABLE_IT(&htim7, TIM_IT_UPDATE);
 }
-#else 
+#else
+HAL_StatusTypeDef HAL_InitTick (uint32_t TickPriority)
+{
+        return HAL_OK;
+}
 
+uint32_t HAL_GetTick (void)
+{
+        static uint32_t ticks = 0U;
+        uint32_t i;
+
+        if (osKernelGetState() == osKernelRunning)
+        {
+                return ((uint32_t)osKernelGetTickCount());
+        }
+
+        for (i = (SystemCoreClock >> 14U); i > 0U; i--)
+        {
+                __NOP(); __NOP(); __NOP(); __NOP(); __NOP(); __NOP();
+                __NOP(); __NOP(); __NOP(); __NOP(); __NOP(); __NOP();
+        }
+       
+        return ++ticks;
+}
 #endif
