@@ -559,7 +559,7 @@ void USART3_IDLE_DMA_RXCplt_Err_Callback(uint16_t Size)
 }
 
 /*串口1空闲中断回调函数*/
-void USART1_IDLE_Callback(uint16_t len)
+uint8_t USART1_IDLE_Callback(uint16_t len)
 {
 	if(USART1RxData[UART1_fifo.usRxWrite][len-1] == '}' )
 	{
@@ -572,7 +572,7 @@ void USART1_IDLE_Callback(uint16_t len)
 			osMessageQueuePut(usart1_recv_semp_queueHandle,&len,0,0);
 		}
 		HAL_UARTEx_ReceiveToIdle_DMA(&huart1, USART1RxData[UART1_fifo.usRxWrite],USART1_Max_Rxbuf_size);
-		len = 0;
+		return 1;
 	}
 	else
 	{
@@ -580,10 +580,12 @@ void USART1_IDLE_Callback(uint16_t len)
 		{
 			memset(USART1RxData[UART1_fifo.usRxWrite],0,USART1_Max_Rxbuf_size);
 			HAL_UARTEx_ReceiveToIdle_DMA(&huart1, USART1RxData[UART1_fifo.usRxWrite],USART1_Max_Rxbuf_size);
+			return 1;
 		}
 		else 
 		{
 			HAL_UARTEx_ReceiveToIdle_DMA(&huart1, USART1RxData[UART1_fifo.usRxWrite] + len,USART1_Max_Rxbuf_size - len);
+			return  0;
 		}
 	}
 }
@@ -625,7 +627,10 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
 		if(huart->Instance == USART1)
 		{
 			rec_len += Size;
-			USART1_IDLE_Callback(rec_len);
+			if(USART1_IDLE_Callback(rec_len))
+			{
+				rec_len = 0;
+			}
 		}
 		else if(huart->Instance == USART2)
 		{
@@ -643,6 +648,7 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
 		if(huart->Instance == USART1)
 		{
 			USART1_IDLE_DMA_RXCplt_Err_Callback(Size);
+			rec_len = 0;
 		}
 		else if(huart->Instance == USART2)
 		{
@@ -660,22 +666,12 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
 	}
 	
 }
-
-//void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-//{
-//	if(huart->Instance == USART3)
-//	{
-//		if (++UART3_fifo.usRxWrite >= UART3_fifo.usRxBufSize)
-//		{
-//			UART3_fifo.usRxWrite = 0;
-//		}
-//		if (osSemaphoreGetCount (SBUS_Parse_sempHandle) < UART3_fifo.usRxBufSize)
-//		{
-//			osSemaphoreRelease(SBUS_Parse_sempHandle);
-//		}
-//		HAL_UART_Receive_DMA(&huart3, &USART3RxData[UART3_fifo.usRxWrite], 1);
-//	}
-//}
+/*经过调试发现，sbus出现问题时，进入的回调函数为这一个，所以在这个内部写出现错误后的处理办法*/
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+	/*重新接受即可*/
+		HAL_UARTEx_ReceiveToIdle_DMA(&huart3, USART3RxData[UART3_fifo.usRxWrite],USART3_Max_Rxbuf_size);
+}
 
 
 /* USER CODE END 1 */

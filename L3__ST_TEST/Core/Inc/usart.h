@@ -56,7 +56,7 @@ extern uint8_t USART1RxData[USART1_Max_Rxnum_size][USART1_Max_Rxbuf_size];
 extern uint8_t USART1TxData[USART1_Max_Txnum_size][USART1_Max_Txbuf_size];
 
 #define USART3_Max_Rxnum_size 30
-#define USART3_Max_Rxbuf_size 30
+#define USART3_Max_Rxbuf_size 40
 
 extern uint8_t USART3RxData[USART3_Max_Rxnum_size][USART3_Max_Rxbuf_size];
 

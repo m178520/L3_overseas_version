@@ -67,7 +67,6 @@ pointToline_distance_t pointToline_distance(double Vehicle_lat,double Vehicle_lo
 	
 	#endif
 	
-	pointToline_info.VehicleToStart  = Vehicle_XY.length;
 	pointToline_info.StartToTerminal = Endpoint_XY.length;
 	
 	/*计算点至线的距离*/              
@@ -75,12 +74,12 @@ pointToline_distance_t pointToline_distance(double Vehicle_lat,double Vehicle_lo
 	double numerator = fabs(start_stop_line.k * Vehicle_XY.x - Vehicle_XY.y + start_stop_line.b);              
 	pointToline_info.pointToline = numerator / denominator;
 
-	/*判断方向*/
-	double pose_direction = (Vehicle_XY.y - Endpoint_XY.y) / (Vehicle_XY.x - Endpoint_XY.x);
-	double direction_err = pose_direction - start_stop_line.k;
-	
-	if (direction_err < 0)      pointToline_info.direct = VEHICLE_DIRECT_RIGHT;
-	else                        pointToline_info.direct = VEHICLE_DIRECT_LEFT;
+//	/*判断方向*/
+//	double pose_direction = (Vehicle_XY.y - Endpoint_XY.y) / (Vehicle_XY.x - Endpoint_XY.x);
+//	double direction_err = pose_direction - start_stop_line.k;
+//	
+//	if (direction_err < 0)      pointToline_info.direct = VEHICLE_DIRECT_RIGHT;
+//	else                        pointToline_info.direct = VEHICLE_DIRECT_LEFT;
 
 	return pointToline_info;
 }
@@ -116,6 +115,9 @@ tracking_control_t tracking_control_Arith(PID_TypeDef *PID_InitStruct,pointTolin
 		Line_straight_param_t vertical_line_fun_param = vertical_line_fun(info.origin_Vehicle_XY.x,info.origin_Vehicle_XY.y,info.origin_start_stop_line_param.k,info.origin_start_stop_line_param.b);
 		/*求出垂足*/	
 		Line_inter_point_t    Line_inter_point        = Line_inter_point_math(info.origin_start_stop_line_param.k,info.origin_start_stop_line_param.b,vertical_line_fun_param.k,vertical_line_fun_param.b);
+
+		tracking_control.foot_point = Line_inter_point;
+	
 		/*将垂足至三角形边长为一定值的坐标求出*/
 		if(info.Endpoint_XY.x >=0)
 		{
@@ -187,8 +189,8 @@ char  Terminal_decision(double distance)
 NAV_output_t NAV_Control()
 {
 	NAV_output_t NAV_output;
-//	double process = 0;
-	double Angle,Speed;
+	double Lenght,process = 0;
+	double Angle,Speed = 60;
 	pointToline_distance_t pointToline_info = {0};
 	tracking_control_t     tracking_control = {0};
 	if(waypoints_run_status.current_toindex != 0) //不是前往初始点
@@ -203,25 +205,67 @@ NAV_output_t NAV_Control()
 	}
 	/*执行终点判定*/
 	if(Terminal_decision(GPStoXY(strtod(gnss.Lat,NULL),strtod(gnss.Lon,NULL),strtod(wait_run_point[waypoints_run_status.current_toindex][0],NULL),strtod(wait_run_point[waypoints_run_status.current_toindex][1],NULL)).length))/*未到达终点*/
-	{
+{
 		/*轨迹跟踪计算*/
 		tracking_control = tracking_control_Arith(&PID_angle_control,pointToline_info);
 		
-		/*格式转换*/
-		if(tracking_control.direct == VEHICLE_DIRECT_LEFT) Angle =  tracking_control.value/2;    //方向值0~90
-		else                                               Angle = -tracking_control.value/2;
+		
+		
+		/*如果车辆到航线距离小于10cm=0.1m，则认为在线上*/
+		if(pointToline_info.pointToline >0.5)//满速拐弯
+		{
+			/*格式转换*/
+			if(tracking_control.direct == VEHICLE_DIRECT_LEFT) Angle =  tracking_control.value;    //方向值0~90
+			else                                               Angle = -tracking_control.value;
+		}
+		else
+		{
+			if(pointToline_info.pointToline >0.03)//在3厘米以内认为在线上
+			{
+				/*格式转换*/
+				if(tracking_control.direct == VEHICLE_DIRECT_LEFT) Angle =  tracking_control.value/2;    //方向值0~90
+				else                                               Angle = -tracking_control.value/2;
+			}
+			else
+			{
+				Angle = 0;
+			}
+		}
 		
 		/*驱动控制*/
 		//Speed目前手动给值
-		NAV_output.RSpeed =  60 + Angle;
-		NAV_output.LSpeed =  60 - Angle;
-//		/*进度计算*/
-//		process = pointToline_info.VehicleToStart/ pointToline_info.StartToTerminal;
+		NAV_output.RSpeed =  Speed + Angle;
+		NAV_output.LSpeed =  Speed - Angle;
+
+		/*进度计算*/
+		/*求出垂足与起点的距离用于进度计算*/
+		if((tracking_control.foot_point.x * pointToline_info.Endpoint_XY.x)>= 0 && (tracking_control.foot_point.y * pointToline_info.Endpoint_XY.y)>=0) //说明垂足与终点在一个象限
+		{
+			/*起点为（0，0） 长度就为根号下a方加b方*/
+			Lenght = sqrt(tracking_control.foot_point.x * tracking_control.foot_point.x + tracking_control.foot_point.y * tracking_control.foot_point.y );
+		}
+	  else
+		{
+			Lenght = 0;
+		}
+		process = Lenght/ (pointToline_info.StartToTerminal - TERMINAL_RANGE);
+	
+		if(process >= (TERMINAL_RANGE/ (pointToline_info.StartToTerminal - TERMINAL_RANGE))+1)//说明到达终点
+		{
+			if(waypoints_run_status.current_toindex > 0)
+			{
+				waypoints_run_status.current_toindex++;
+				waypoints_run_status.current_fromindex++;
+			}
+			else  waypoints_run_status.current_toindex++;
+		}
+			if(process > 1) //进度赋值为1
+		{
+			
+		}
 	}
 	else /*到达终点*/
 	{
-//		/*进度计算*/
-//		process = 1;
 		
 		if(waypoints_run_status.current_toindex > 0)
 		{

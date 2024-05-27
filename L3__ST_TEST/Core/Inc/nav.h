@@ -11,7 +11,7 @@
 #define VEHICLE_DIRECT_LEFT  -1   //车辆左转
 #define VEHICLE_DIRECT_RIGHT 1   //车辆右转
 
-#define FIXED_LENGHT 1         //求车辆夹角与车辆至L长度点直线的夹角
+#define FIXED_LENGHT 0.5         //求车辆夹角与车辆至L长度点直线的夹角
 
 #define WAIT_RUN_POINT_NUM  50 
 #define PROCESSED_POINT_NUM 30 
@@ -39,6 +39,7 @@ typedef struct
 {
 	int8_t direct;
 	double value;
+	Line_inter_point_t foot_point;
 }tracking_control_t;
 
 typedef struct
@@ -68,7 +69,6 @@ typedef struct
 	
 	int8_t   direct;
 	double pointToline;
-	double VehicleToStart;
 	double StartToTerminal;
 }pointToline_distance_t;
 #endif
