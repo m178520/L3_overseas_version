@@ -30,7 +30,7 @@
 TIM_HandleTypeDef        htim7;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
-
+#if 0
 /**
   * @brief  This function configures the TIM7 as a time base source.
   *         The time source is configured  to have 1ms time base with a dedicated
@@ -130,4 +130,6 @@ void HAL_ResumeTick(void)
   /* Enable TIM7 Update interrupt */
   __HAL_TIM_ENABLE_IT(&htim7, TIM_IT_UPDATE);
 }
+#else 
 
+#endif

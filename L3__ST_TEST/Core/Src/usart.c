@@ -530,66 +530,135 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
 }
 
 /* USER CODE BEGIN 1 */
+/*串口DMA传输完成中断，本不应该发生，收满了还未发生空闲中断，所以是错误处理*/
+void USART1_IDLE_DMA_RXCplt_Err_Callback(uint16_t len)
+{
+	/*直接将这收满的放到任务中去处理就好*/
+	if (++UART1_fifo.usRxWrite >= UART1_fifo.usRxBufSize)
+	{
+		UART1_fifo.usRxWrite = 0;
+	}
+	if (osMessageQueueGetCount(usart1_recv_semp_queueHandle) < UART1_fifo.usRxBufSize)
+	{
+		osMessageQueuePut(usart1_recv_semp_queueHandle,&len,0,0);
+	}
+	HAL_UARTEx_ReceiveToIdle_DMA(&huart1, USART1RxData[UART1_fifo.usRxWrite],USART1_Max_Rxbuf_size);
+}
+
+void USART3_IDLE_DMA_RXCplt_Err_Callback(uint16_t Size)
+{
+	if (++UART3_fifo.usRxWrite >= UART3_fifo.usRxBufSize)
+	{
+		UART3_fifo.usRxWrite = 0;
+	}
+	if (osMessageQueueGetCount (usart3_recv_semp_queueHandle) < UART3_fifo.usRxBufSize)
+	{
+		osMessageQueuePut(usart3_recv_semp_queueHandle,&Size,0,0);
+	}
+	HAL_UARTEx_ReceiveToIdle_DMA(&huart3, USART3RxData[UART3_fifo.usRxWrite],USART3_Max_Rxbuf_size);
+}
+
+/*串口1空闲中断回调函数*/
+void USART1_IDLE_Callback(uint16_t len)
+{
+	if(USART1RxData[UART1_fifo.usRxWrite][len-1] == '}' )
+	{
+		if (++UART1_fifo.usRxWrite >= UART1_fifo.usRxBufSize)
+		{
+			UART1_fifo.usRxWrite = 0;
+		}
+		if (osMessageQueueGetCount(usart1_recv_semp_queueHandle) < UART1_fifo.usRxBufSize)
+		{
+			osMessageQueuePut(usart1_recv_semp_queueHandle,&len,0,0);
+		}
+		HAL_UARTEx_ReceiveToIdle_DMA(&huart1, USART1RxData[UART1_fifo.usRxWrite],USART1_Max_Rxbuf_size);
+		len = 0;
+	}
+	else
+	{
+		if(len == USART1_Max_Rxbuf_size) 
+		{
+			memset(USART1RxData[UART1_fifo.usRxWrite],0,USART1_Max_Rxbuf_size);
+			HAL_UARTEx_ReceiveToIdle_DMA(&huart1, USART1RxData[UART1_fifo.usRxWrite],USART1_Max_Rxbuf_size);
+		}
+		else 
+		{
+			HAL_UARTEx_ReceiveToIdle_DMA(&huart1, USART1RxData[UART1_fifo.usRxWrite] + len,USART1_Max_Rxbuf_size - len);
+		}
+	}
+}
+
+void USART2_IDLE_Callback(uint16_t Size)
+{
+	if (++UART2_fifo.usRxWrite >= UART2_fifo.usRxBufSize)
+	{
+		UART2_fifo.usRxWrite = 0;
+	}
+	if (osMessageQueueGetCount(VCU_recv_semp_queueHandle) < UART2_fifo.usRxBufSize)
+	{
+		osMessageQueuePut(VCU_recv_semp_queueHandle,&Size,0,0);
+	}
+	HAL_UARTEx_ReceiveToIdle_DMA(&huart2, USART2RxData[UART2_fifo.usRxWrite],USART2_Max_Rxbuf_size);
+}
+
+void USART3_IDLE_Callback(uint16_t Size)
+{
+	if (++UART3_fifo.usRxWrite >= UART3_fifo.usRxBufSize)
+	{
+		UART3_fifo.usRxWrite = 0;
+	}
+	if (osMessageQueueGetCount (usart3_recv_semp_queueHandle) < UART3_fifo.usRxBufSize)
+	{
+		osMessageQueuePut(usart3_recv_semp_queueHandle,&Size,0,0);
+	}
+	HAL_UARTEx_ReceiveToIdle_DMA(&huart3, USART3RxData[UART3_fifo.usRxWrite],USART3_Max_Rxbuf_size);
+}
 /*
-USART1串口接受中断回调函数
+USART1串口接受空闲中断回调函数
 */
 void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
 {
 	static uint16_t rec_len = 0;
-	if(huart->Instance == USART1)
+	/*正常串口空闲中断*/
+	if(huart->RxEventType == HAL_UART_RXEVENT_IDLE)
 	{
-		rec_len += Size;
-		if(USART1RxData[UART1_fifo.usRxWrite][rec_len-1] == '}' )
+		if(huart->Instance == USART1)
 		{
-			if (++UART1_fifo.usRxWrite >= UART1_fifo.usRxBufSize)
-			{
-				UART1_fifo.usRxWrite = 0;
-			}
-			if (osMessageQueueGetCount(usart1_recv_semp_queueHandle) < UART1_fifo.usRxBufSize)
-			{
-				osMessageQueuePut(usart1_recv_semp_queueHandle,&rec_len,0,0);
-			}
-			HAL_UARTEx_ReceiveToIdle_DMA(&huart1, USART1RxData[UART1_fifo.usRxWrite],USART1_Max_Rxbuf_size);
-			rec_len = 0;
+			rec_len += Size;
+			USART1_IDLE_Callback(rec_len);
 		}
-		else
+		else if(huart->Instance == USART2)
 		{
-			if(rec_len == USART1_Max_Rxbuf_size) 
-			{
-				memset(USART1RxData[UART1_fifo.usRxWrite],0,USART1_Max_Rxbuf_size);
-				HAL_UARTEx_ReceiveToIdle_DMA(&huart1, USART1RxData[UART1_fifo.usRxWrite],USART1_Max_Rxbuf_size);
-			}
-			else 
-			{
-				HAL_UARTEx_ReceiveToIdle_DMA(&huart1, USART1RxData[UART1_fifo.usRxWrite] + rec_len,USART1_Max_Rxbuf_size - rec_len);
-			}
+			USART2_IDLE_Callback(Size);
 		}
-		
+		else if(huart->Instance == USART3)
+		{
+			USART3_IDLE_Callback(Size);
+		}
 	}
-	else if(huart->Instance == USART2)
+	/*DMA接收完成中断*/
+	/*在串口空闲中断中如果是DMA完成中断了，却没有进行空闲中断，这时候就不能再接了，只能关闭dma重新使能*/
+	else if(huart->RxEventType == HAL_UART_RXEVENT_TC)
 	{
-		if (++UART2_fifo.usRxWrite >= UART2_fifo.usRxBufSize)
+		if(huart->Instance == USART1)
 		{
-			UART2_fifo.usRxWrite = 0;
+			USART1_IDLE_DMA_RXCplt_Err_Callback(Size);
 		}
-		if (osMessageQueueGetCount(VCU_recv_semp_queueHandle) < UART2_fifo.usRxBufSize)
+		else if(huart->Instance == USART2)
 		{
-			osMessageQueuePut(VCU_recv_semp_queueHandle,&Size,0,0);
+			
 		}
-		HAL_UARTEx_ReceiveToIdle_DMA(&huart2, USART2RxData[UART2_fifo.usRxWrite],USART2_Max_Rxbuf_size);
+		else if(huart->Instance == USART3)
+		{
+			USART3_IDLE_DMA_RXCplt_Err_Callback(Size);
+		}
 	}
-	else if(huart->Instance == USART3)
+	/*DMA接收一半完成中断*/
+	else if(huart->RxEventType == HAL_UART_RXEVENT_HT)
 	{
-		if (++UART3_fifo.usRxWrite >= UART3_fifo.usRxBufSize)
-		{
-			UART3_fifo.usRxWrite = 0;
-		}
-		if (osMessageQueueGetCount (usart3_recv_semp_queueHandle) < UART3_fifo.usRxBufSize)
-		{
-			osMessageQueuePut(usart3_recv_semp_queueHandle,&Size,0,0);
-		}
-		HAL_UARTEx_ReceiveToIdle_DMA(&huart3, USART3RxData[UART3_fifo.usRxWrite],USART3_Max_Rxbuf_size);
+	
 	}
+	
 }
 
 //void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
