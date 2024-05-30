@@ -138,7 +138,7 @@ const osThreadAttr_t EC600U_SEND_attributes = {
 osThreadId_t HTTP_REQUESTHandle;
 const osThreadAttr_t HTTP_REQUEST_attributes = {
   .name = "HTTP_REQUEST",
-  .stack_size = 256 * 4,
+  .stack_size = 300 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
 /* Definitions for Device_unusual */
@@ -475,6 +475,7 @@ void EC600U_REC_task(void *argument)
 				}
 			}
 		}
+		osDelay(1);
   }
   /* USER CODE END EC600U_REC_task */
 }

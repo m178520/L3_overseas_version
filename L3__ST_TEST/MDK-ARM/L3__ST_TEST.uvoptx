@@ -170,6 +170,11 @@
           <WinNumber>1</WinNumber>
           <ItemText>USART1RxData</ItemText>
         </Ww>
+        <Ww>
+          <count>3</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>wait_run_point</ItemText>
+        </Ww>
       </WatchWindow1>
       <WatchWindow2>
         <Ww>

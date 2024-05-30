@@ -56,16 +56,17 @@ void HTTP_Authen_Request(void)
 void HTTP_jobStart_Request(void)
 {
 	char data[50];
-	char Header[100];
+	char Header[150];
 	sprintf(data,"%s%d","zoneId=",MQTT_Task_Msg.zoneId);
 	insert_str(HTTP_REQUEST_HEADER_MSG("\0","\0","\0"),Header,"%s%d%d", "application/x-www-form-urlencoded;charset=UTF-8" ,Authen_info.deviceId,Authen_info.groupId);
 	HTTP_post(JOBSTART_URL,data,Header);
+	printf("发送开始请求");
 }
 
 /*暂停工作消息发送*/
 void HTTP_jobPause_Request(void)
 {
-	char Header[100];
+	char Header[150];
 	char *trans_Msg;
 	trans_Msg = ObjectToString(EC600U_HTTP_jobPause);
 	if(trans_Msg != NULL)
@@ -80,7 +81,7 @@ void HTTP_jobPause_Request(void)
 void HTTP_jobContinue_Request(void)
 {
 	char data[50];
-	char Header[100];
+	char Header[150];
 	sprintf(data,"%s%d","zoneId=",MQTT_Task_Msg.zoneId);
 	insert_str(HTTP_REQUEST_HEADER_MSG("\0","\0","\0"),Header,"%s%d%d", "application/x-www-form-urlencoded;charset=UTF-8" ,Authen_info.deviceId,Authen_info.groupId);
 	HTTP_post(JOBCONTINUE_URL,data,Header);
@@ -90,7 +91,7 @@ void HTTP_jobContinue_Request(void)
 void HTTP_jobFinish_Request(void)
 {
 	char data[50];
-	char Header[100];
+	char Header[150];
 	sprintf(data,"%s%d%c%s%d","zoneId=",MQTT_Task_Msg.zoneId,'&',"pointNum=",HTTP_Task_Msg.taskNum);
 	insert_str(HTTP_REQUEST_HEADER_MSG("\0","\0","\0"),Header,"%s%d%d", "application/x-www-form-urlencoded;charset=UTF-8" ,Authen_info.deviceId,Authen_info.groupId);
 	HTTP_post(JOBFINISH_URL,data,Header);
@@ -99,7 +100,7 @@ void HTTP_jobFinish_Request(void)
 /*获取分段航点*/
 void HTTP_updateRoute_Request(void)
 {
-	char Header[100];
+	char Header[150];
 	char *trans_Msg;
 	trans_Msg = ObjectToString(EC600U_HTTP_updateRoute);
 	if(trans_Msg != NULL)
@@ -114,7 +115,7 @@ void HTTP_updateRoute_Request(void)
 void HTTP_goToCharge_Request(void)
 {
 	char data[50];
-	char Header[100];
+	char Header[150];
 	sprintf(data,"%s%d","zoneId=",MQTT_Task_Msg.zoneId);
 	insert_str(HTTP_REQUEST_HEADER_MSG("\0","\0","\0"),Header,"%s%d%d", "application/x-www-form-urlencoded;charset=UTF-8" ,Authen_info.deviceId,Authen_info.groupId);
 	HTTP_post(JOBCONTINUE_URL,data,Header);
