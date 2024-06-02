@@ -7,7 +7,7 @@ l3__st_test\main.o: ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h
 l3__st_test\main.o: ../Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h7xx.h
 l3__st_test\main.o: ../Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h753xx.h
 l3__st_test\main.o: ../Drivers/CMSIS/Include/core_cm7.h
-l3__st_test\main.o: E:\keil5\IDE\ARM\ARMCC\Bin\..\include\stdint.h
+l3__st_test\main.o: D:\Software\Keil_v5\software\ARM\ARMCC\Bin\..\include\stdint.h
 l3__st_test\main.o: ../Drivers/CMSIS/Include/cmsis_version.h
 l3__st_test\main.o: ../Drivers/CMSIS/Include/cmsis_compiler.h
 l3__st_test\main.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
@@ -15,8 +15,8 @@ l3__st_test\main.o: ../Drivers/CMSIS/Include/mpu_armv7.h
 l3__st_test\main.o: ../Drivers/CMSIS/Device/ST/STM32H7xx/Include/system_stm32h7xx.h
 l3__st_test\main.o: ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h
 l3__st_test\main.o: ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h
-l3__st_test\main.o: E:\keil5\IDE\ARM\ARMCC\Bin\..\include\stddef.h
-l3__st_test\main.o: E:\keil5\IDE\ARM\ARMCC\Bin\..\include\math.h
+l3__st_test\main.o: D:\Software\Keil_v5\software\ARM\ARMCC\Bin\..\include\stddef.h
+l3__st_test\main.o: D:\Software\Keil_v5\software\ARM\ARMCC\Bin\..\include\math.h
 l3__st_test\main.o: ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_rcc_ex.h
 l3__st_test\main.o: ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_gpio.h
 l3__st_test\main.o: ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_gpio_ex.h
@@ -40,10 +40,10 @@ l3__st_test\main.o: ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_tim_ex.h
 l3__st_test\main.o: ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h
 l3__st_test\main.o: ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h
 l3__st_test\main.o: ../Core/Inc/deal_string.h
-l3__st_test\main.o: E:\keil5\IDE\ARM\ARMCC\Bin\..\include\stdio.h
-l3__st_test\main.o: E:\keil5\IDE\ARM\ARMCC\Bin\..\include\string.h
-l3__st_test\main.o: E:\keil5\IDE\ARM\ARMCC\Bin\..\include\stdlib.h
-l3__st_test\main.o: E:\keil5\IDE\ARM\ARMCC\Bin\..\include\stdarg.h
+l3__st_test\main.o: D:\Software\Keil_v5\software\ARM\ARMCC\Bin\..\include\stdio.h
+l3__st_test\main.o: D:\Software\Keil_v5\software\ARM\ARMCC\Bin\..\include\string.h
+l3__st_test\main.o: D:\Software\Keil_v5\software\ARM\ARMCC\Bin\..\include\stdlib.h
+l3__st_test\main.o: D:\Software\Keil_v5\software\ARM\ARMCC\Bin\..\include\stdarg.h
 l3__st_test\main.o: ../cJSON/Inc/cJSON.h
 l3__st_test\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h
 l3__st_test\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
@@ -62,7 +62,7 @@ l3__st_test\main.o: ../Core/Inc/spi.h
 l3__st_test\main.o: ../Core/Inc/tim.h
 l3__st_test\main.o: ../Core/Inc/usart.h
 l3__st_test\main.o: ../Core/Inc/gpio.h
-l3__st_test\main.o: E:\keil5\Pack\Keil\ARM_Compiler\1.7.2\Include\EventRecorder.h
+l3__st_test\main.o: D:\Software\Keil_v5\pack\Keil\ARM_Compiler\1.7.2\Include\EventRecorder.h
 l3__st_test\main.o: ../Arithmetic/WGS84transform/WGS84ToAngle.h
 l3__st_test\main.o: ../GeographicLib-C-2.1/geodesic.h
 l3__st_test\main.o: ../Arithmetic/PID/pid.h

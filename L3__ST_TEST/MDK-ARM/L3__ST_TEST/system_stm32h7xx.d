@@ -2,7 +2,7 @@ l3__st_test\system_stm32h7xx.o: ../Core/Src/system_stm32h7xx.c
 l3__st_test\system_stm32h7xx.o: ../Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h7xx.h
 l3__st_test\system_stm32h7xx.o: ../Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h753xx.h
 l3__st_test\system_stm32h7xx.o: ../Drivers/CMSIS/Include/core_cm7.h
-l3__st_test\system_stm32h7xx.o: E:\keil5\IDE\ARM\ARMCC\Bin\..\include\stdint.h
+l3__st_test\system_stm32h7xx.o: D:\Software\Keil_v5\software\ARM\ARMCC\Bin\..\include\stdint.h
 l3__st_test\system_stm32h7xx.o: ../Drivers/CMSIS/Include/cmsis_version.h
 l3__st_test\system_stm32h7xx.o: ../Drivers/CMSIS/Include/cmsis_compiler.h
 l3__st_test\system_stm32h7xx.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
@@ -14,8 +14,8 @@ l3__st_test\system_stm32h7xx.o: ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_ha
 l3__st_test\system_stm32h7xx.o: ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h
 l3__st_test\system_stm32h7xx.o: ../Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h7xx.h
 l3__st_test\system_stm32h7xx.o: ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h
-l3__st_test\system_stm32h7xx.o: E:\keil5\IDE\ARM\ARMCC\Bin\..\include\stddef.h
-l3__st_test\system_stm32h7xx.o: E:\keil5\IDE\ARM\ARMCC\Bin\..\include\math.h
+l3__st_test\system_stm32h7xx.o: D:\Software\Keil_v5\software\ARM\ARMCC\Bin\..\include\stddef.h
+l3__st_test\system_stm32h7xx.o: D:\Software\Keil_v5\software\ARM\ARMCC\Bin\..\include\math.h
 l3__st_test\system_stm32h7xx.o: ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_rcc_ex.h
 l3__st_test\system_stm32h7xx.o: ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_gpio.h
 l3__st_test\system_stm32h7xx.o: ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_gpio_ex.h

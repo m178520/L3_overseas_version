@@ -394,7 +394,7 @@ void StartDefaultTask(void *argument)
 //		osDelay(2000);
 //		cJSON* test = Json_data_Change(EC600U_MQTT_SEND_STATUS,"%f%s%s",1.1,"property","lat");
 //		printf("%f",test->valuedouble);
-		/*ÐèÒªµÄÄÚ´æºÜ´ó£¬½¨Òé1024*/
+		/*ï¿½ï¿½Òªï¿½ï¿½ï¿½Ú´ï¿½Ü´ó£¬½ï¿½ï¿½ï¿½1024*/
 //		WGS84_axis_t Start_To_Distance_Angle	= GPStoXY(125,43,126,44);
 //		printf("%f,%f,%f\r\n",Start_To_Distance_Angle.s12,Start_To_Distance_Angle.azi1,Start_To_Distance_Angle.azi2);
 		
@@ -418,7 +418,7 @@ void EC600U_REC_task(void *argument)
   /* USER CODE BEGIN EC600U_REC_task */
 	osStatus_t err;
 	uint16_t Recv_Len;
-	//¿ªÆô´®¿Ú¿ÕÏÐDMA¿ÕÏÐÖÐ¶Ï
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½DMAï¿½ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½
 	HAL_UARTEx_ReceiveToIdle_DMA(&huart1, USART1RxData[UART1_fifo.usRxWrite],USART1_Max_Rxbuf_size);
   /* Infinite loop */
   for(;;)
@@ -426,7 +426,7 @@ void EC600U_REC_task(void *argument)
 		err = osMessageQueueGet (usart1_recv_semp_queueHandle, &Recv_Len, 0, EC600U_REC_block_time);
 		if(err == osOK)
 		{
-			if(Recv_Len != 0) //ËµÃ÷´®¿Ú·¢ËÍÀ´µÄÊý¾Ý
+			if(Recv_Len != 0) //Ëµï¿½ï¿½ï¿½ï¿½ï¿½Ú·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			{
 //				printf("%s\r\n",USART1RxData[UART1_fifo.usRxRead]);
 				usart1_rec_data_apply(USART1RxData[UART1_fifo.usRxRead],Recv_Len);
@@ -437,41 +437,41 @@ void EC600U_REC_task(void *argument)
 					UART1_fifo.usRxRead = 0;
 				}
 			}
-			else  //ËµÃ÷Ö»ÊÇÎªÁËÀ´½â³ý×èÈû£¬ÒÔ´ËÅÐ¶ÏÊÇ·ñ³¬Ê±
-				printf("½â³ý×èÈû\r\n");
+			else  //Ëµï¿½ï¿½Ö»ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô´ï¿½ï¿½Ð¶ï¿½ï¿½Ç·ï¿½Ê±
+				printf("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\r\n");
 		}
-		else // ³¬Ê±´¦Àí
+		else // ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½
 		{
-			if(Device_Run_Status.Curstatus == Poweron) //¿ª»ú¹ý³Ì»Ø¸´³¬Ê±
+			if(Device_Run_Status.Curstatus == Poweron) //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì»Ø¸ï¿½ï¿½ï¿½Ê±
 			{
 				if(Device_Poweron_status == Check_poweron)
 				{
-					printf("4GÄ£¿éÉÏµçÊ§°Ü");
-					osEventFlagsClear(Device_Run_status_eventHandle,BIT_1);                //ÉèÖÃ4GÄ£¿éÉÏµçÊ§°Ü±êÖ¾
+					printf("4GÄ£ï¿½ï¿½ï¿½Ïµï¿½Ê§ï¿½ï¿½");
+					osEventFlagsClear(Device_Run_status_eventHandle,BIT_1);                //ï¿½ï¿½ï¿½ï¿½4GÄ£ï¿½ï¿½ï¿½Ïµï¿½Ê§ï¿½Ü±ï¿½Ö¾
 					EC600U_REC_block_time = portMAX_DELAY;
 				}
 				else if(Device_Poweron_status == Check_Authen)
 				{
-					if((osEventFlagsGet(Device_Run_status_eventHandle) & BIT_3) != 0)    //ÍøÂçºÃÊ±ÇëÇóHTTP³¬Ê±£¬½øÐÐÖØ¸´ÇëÇó£¬ÍøÂç²»ºÃÊ±¼ÌÐøµÈ´ý£¬µÈ´ýÍøÂçÁ¼ºÃÊ±ÔÙ½øÐÐ²Ù×÷
+					if((osEventFlagsGet(Device_Run_status_eventHandle) & BIT_3) != 0)    //ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½HTTPï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ç²»ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½È´ï¿½ï¿½ï¿½ï¿½È´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½Ù½ï¿½ï¿½Ð²ï¿½ï¿½ï¿½
 					{
 						if(request_num <= 5)
 						{
-							printf("HTTP¼øÈ¨ÇëÇóÊ§°Ü\r\n");
+							printf("HTTPï¿½ï¿½È¨ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½\r\n");
 							osMessageQueuePut(HTTP_REQUEST_queueHandle, &BIT_0 , 0 ,10);
 							request_num ++;
 						}
 						else
 						{
-							printf("¼øÈ¨Ê§°Ü");
-							osEventFlagsClear(Device_Run_status_eventHandle,BIT_3);                //ÉèÖÃ¼øÈ¨Ê§°Ü±êÖ¾
+							printf("ï¿½ï¿½È¨Ê§ï¿½ï¿½");
+							osEventFlagsClear(Device_Run_status_eventHandle,BIT_3);                //ï¿½ï¿½ï¿½Ã¼ï¿½È¨Ê§ï¿½Ü±ï¿½Ö¾
 							EC600U_REC_block_time = portMAX_DELAY;
 						}
 					}
 				}
 				else if(Device_Poweron_status == Check_MQTT_APP)
 				{
-					printf("½ÓÊÜMQTTÐÅÏ¢Ê§°Ü");
-					osEventFlagsClear(Device_Run_status_eventHandle,BIT_6);                //ÉèÖÃRTKÏûÏ¢¶ªÊ§±êÖ¾
+					printf("ï¿½ï¿½ï¿½ï¿½MQTTï¿½ï¿½Ï¢Ê§ï¿½ï¿½");
+					osEventFlagsClear(Device_Run_status_eventHandle,BIT_6);                //ï¿½ï¿½ï¿½ï¿½RTKï¿½ï¿½Ï¢ï¿½ï¿½Ê§ï¿½ï¿½Ö¾
 				}
 			}
 		}
@@ -506,8 +506,8 @@ void APP_Info_Submit_task(void *argument)
 		else
 		{
 			APP_Info_Submit_time  = portMAX_DELAY;
-			//¸Õ¿ªÊ¼½ÓÊÜµ½gpsÊý¾Ý£¬²»ÎÈ¶¨£¬µÈ´ýÒ»¶ÎÊ±¼äºóÔÙ¿ªÆôÉÏ´«
-			HAL_TIM_Base_Start_IT(&htim6);                             //MQTT_APP´ò¿ª³É¹¦²¢½ÓÊÕµ½GPSÊý¾Ý£¬¿ªÆôAPPÐÅÏ¢ÉÏ±¨
+			//ï¿½Õ¿ï¿½Ê¼ï¿½ï¿½ï¿½Üµï¿½gpsï¿½ï¿½ï¿½Ý£ï¿½ï¿½ï¿½ï¿½È¶ï¿½ï¿½ï¿½ï¿½È´ï¿½Ò»ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ù¿ï¿½ï¿½ï¿½ï¿½Ï´ï¿½
+			HAL_TIM_Base_Start_IT(&htim6);                             //MQTT_APPï¿½ò¿ª³É¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õµï¿½GPSï¿½ï¿½ï¿½Ý£ï¿½ï¿½ï¿½ï¿½ï¿½APPï¿½ï¿½Ï¢ï¿½Ï±ï¿½
 		}
   }
   /* USER CODE END APP_Info_Submit_task */
@@ -532,23 +532,23 @@ void Device_Run_task(void *argument)
   {
 		if(controlFlag == NALCont)
 		{
-			uxBits = osEventFlagsWait(Device_Run_status_eventHandle,  BIT_1 | BIT_3 |BIT_4 | BIT_23,osFlagsWaitAll | osFlagsNoClear, 1000); //»¹ÓÐbit0ÔÝÊ±ÏÈ²»¼ÓÈëBIT_0 |  µÈ´ý1s£¨ÔÝÊ±£©´òÓ¡²»Âú×ãµÄÌõ¼þ£¬Èç¹û×ª»»ÁËsbus¿ØÖÆ¾Í×ª»»Ä£Ê½
+			uxBits = osEventFlagsWait(Device_Run_status_eventHandle,  BIT_1 | BIT_3 |BIT_4 | BIT_23,osFlagsWaitAll | osFlagsNoClear, 1000); //ï¿½ï¿½ï¿½ï¿½bit0ï¿½ï¿½Ê±ï¿½È²ï¿½ï¿½ï¿½ï¿½ï¿½BIT_0 |  ï¿½È´ï¿½1sï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ó¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½sbusï¿½ï¿½ï¿½Æ¾ï¿½×ªï¿½ï¿½Ä£Ê½
 		
-			if( (uxBits & ( BIT_1 | BIT_3 | BIT_4 | BIT_23))  == ( BIT_1 | BIT_3 | BIT_4 | BIT_23)) //ÊÇ·ñÂú×ãÆô¶¯µÄÌõ¼þ
+			if( (uxBits & ( BIT_1 | BIT_3 | BIT_4 | BIT_23))  == ( BIT_1 | BIT_3 | BIT_4 | BIT_23)) //ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			{
-				if(Device_Run_Status.Curstatus == Job_Working)                                                      //ÊÇ·ñÍê³ÉÁË¿É¹¤×÷µÄ×¼±¸
+				if(Device_Run_Status.Curstatus == Job_Working)                                                      //ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½Ë¿É¹ï¿½ï¿½ï¿½ï¿½ï¿½×¼ï¿½ï¿½
 				{
 					NAV_output = NAV_Control();
-//					printf("×óÂÖ£º%f,ÓÒÂÖ£º%f\r\n",NAV_output.LSpeed,NAV_output.RSpeed);
+//					printf("ï¿½ï¿½ï¿½Ö£ï¿½%f,ï¿½ï¿½ï¿½Ö£ï¿½%f\r\n",NAV_output.LSpeed,NAV_output.RSpeed);
 					CAN_Msg = Direct_Drive_motor(NAV_output.RSpeed,NAV_output.LSpeed);
 					CAN1_send_data_apply(CAN_Msg.L_Msg);
 					CAN1_send_data_apply(CAN_Msg.R_Msg);
 					HAL_GPIO_TogglePin(GPIOB,GPIO_PIN_0);	
 				}
 			}
-			else //³¤Ê±¼ä²»Âú×ãÌõ¼þ
+			else //ï¿½ï¿½Ê±ï¿½ä²»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			{
-				printf("×Ô¶¯µ¼º½Ìõ¼þ²»Âú×ã");
+				printf("ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
 			}
 		}
 		else if(controlFlag == sbusCont)
@@ -620,37 +620,37 @@ void HTTP_REQUEST_task(void *argument)
 		{
 			if((Device_Run_Bits & BIT_2)  != 0)
 			{
-				/*¼øÈ¨Ö¸Áî*/
+				/*ï¿½ï¿½È¨Ö¸ï¿½ï¿½*/
 				if( (uxBits & BIT_0)  != 0 )
 				{
 					HTTP_Authen_Request();
 				}
-				/*¿ªÊ¼×÷ÒµÖ¸Áî*/
+				/*ï¿½ï¿½Ê¼ï¿½ï¿½ÒµÖ¸ï¿½ï¿½*/
 				else if((uxBits & BIT_1)  != 0)
 				{
 					HTTP_jobStart_Request();
 				}
-				/*ÔÝÍ£×÷ÒµÖ¸Áî*/
+				/*ï¿½ï¿½Í£ï¿½ï¿½ÒµÖ¸ï¿½ï¿½*/
 				else if((uxBits & BIT_2)  != 0)
 				{
 					HTTP_jobPause_Request();
 				}
-				/*¼ÌÐø×÷ÒµÖ¸Áî*/
+				/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÒµÖ¸ï¿½ï¿½*/
 				else if((uxBits & BIT_3)  != 0)
 				{
 					HTTP_jobContinue_Request();
 				}
-				/*ÈÎÎñÍê³ÉÖ¸Áî*/
+				/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½*/
 				else if((uxBits & BIT_4)  != 0)
 				{
 					HTTP_jobFinish_Request();
 				}
-				/*»ñÈ¡·Ö¶Îº½µãÖ¸Áî*/
+				/*ï¿½ï¿½È¡ï¿½Ö¶Îºï¿½ï¿½ï¿½Ö¸ï¿½ï¿½*/
 				else if((uxBits & BIT_5)  != 0)
 				{
 					HTTP_updateRoute_Request();
 				}
-				/*»ñÈ¡³äµç×®Î»ÖÃÖ¸Áî*/
+				/*ï¿½ï¿½È¡ï¿½ï¿½ï¿½×®Î»ï¿½ï¿½Ö¸ï¿½ï¿½*/
 				else if((uxBits & BIT_6)  != 0)
 				{
 					HTTP_goToCharge_Request();
@@ -677,26 +677,26 @@ void Device_unusual_task(void *argument)
   for(;;)
   {
 		uxBits = osEventFlagsWait(Device_unusual_status_eventHandle, BIT_0 | BIT_1 ,osFlagsWaitAny, Device_unusual_time);
-		if( (uxBits & BIT_0)  != 0 )               //Ç¿ÖÆÍ£Ö¹
+		if( (uxBits & BIT_0)  != 0 )               //Ç¿ï¿½ï¿½Í£Ö¹
 		{
-			osEventFlagsClear(Device_Run_status_eventHandle,BIT_23);                //²»¿ÉÆô¶¯
+			osEventFlagsClear(Device_Run_status_eventHandle,BIT_23);                //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			HAL_GPIO_TogglePin(GPIOB,GPIO_PIN_0);
 			osDelay(1000);
 		}
-		else if( (uxBits & BIT_1)  != 0 )          //×´Ì¬±ä»¯
+		else if( (uxBits & BIT_1)  != 0 )          //×´Ì¬ï¿½ä»¯
 		{
-			if(Device_Run_Status.Curstatus == Job_Wait) // Èç¹ûÊÇµÈ´ý½×¶Î×ª»»Îª¹¤×÷½×¶Î
+			if(Device_Run_Status.Curstatus == Job_Wait) // ï¿½ï¿½ï¿½ï¿½ÇµÈ´ï¿½ï¿½×¶ï¿½×ªï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½×¶ï¿½
 			{
-				/*ÏÈ½«´ÓhttpÄÃµ½µÄº½µã½øÐÐ·Ö¸î*/
+				/*ï¿½È½ï¿½ï¿½ï¿½httpï¿½Ãµï¿½ï¿½Äºï¿½ï¿½ï¿½ï¿½ï¿½Ð·Ö¸ï¿½*/
 				waypoints_Parse(HTTP_Task_Msg.waypoints,",");
-				/*ÉèÖÃµ±Ç°×´Ì¬*/
+				/*ï¿½ï¿½ï¿½Ãµï¿½Ç°×´Ì¬*/
 				Device_Run_Status.Prestatus = Device_Run_Status.Curstatus;
 				Device_Run_Status.Curstatus = Device_Run_Status.Alterstatus;
-				/*ÉèÖÃµÚ23Î»ÈÃÉè±¸¿ÉÒÔÆô¶¯*/
+				/*ï¿½ï¿½ï¿½Ãµï¿½23Î»ï¿½ï¿½ï¿½è±¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 				osEventFlagsSet(Device_Run_status_eventHandle,BIT_23);
 				
 			}
-			else if(Device_Run_Status.Curstatus == Job_Working) //¹¤×÷½×¶Î×ª»»Îª »òÈÎÎñÔÝÍ£ »òÈÎÎñÍê³É »òÕÏ°­Îï×èÈû
+			else if(Device_Run_Status.Curstatus == Job_Working) //ï¿½ï¿½ï¿½ï¿½ï¿½×¶ï¿½×ªï¿½ï¿½Îª ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í£ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			{
 				
 			}
@@ -706,13 +706,13 @@ void Device_unusual_task(void *argument)
 			}
 			
 		}
-		else if( (uxBits & BIT_2)  != 0 )          //RTKÊ§È¥ÐÅºÅ
+		else if( (uxBits & BIT_2)  != 0 )          //RTKÊ§È¥ï¿½Åºï¿½
 		{
-			osEventFlagsClear(Device_Run_status_eventHandle,BIT_23);                //²»¿ÉÆô¶¯
+			osEventFlagsClear(Device_Run_status_eventHandle,BIT_23);                //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		}
-		else //Èç¹û³¬Ê±
+		else //ï¿½ï¿½ï¿½ï¿½ï¿½Ê±
 		{
-			osEventFlagsSet(Device_Run_status_eventHandle,BIT_23);                //×ª±äÎªÆô¶¯
+			osEventFlagsSet(Device_Run_status_eventHandle,BIT_23);                //×ªï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½
 		}
 //    osDelay(1);
   }
@@ -721,7 +721,7 @@ void Device_unusual_task(void *argument)
 
 /* USER CODE BEGIN Header_Power_Check_task */
 /**
-*        µç³ØÐÅÏ¢µÄ³ÖÐø»ñÈ¡,Èç¹ûÒ»¶¨Ê±¼äÎ´ÄÜ»ñÈ¡µç³ØÐÅÏ¢£¬ÔòÐû²¼ÎÞµç
+*        ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½Ä³ï¿½ï¿½ï¿½ï¿½ï¿½È¡,ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ê±ï¿½ï¿½Î´ï¿½Ü»ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þµï¿½
 * @brief Function implementing the Power_Check thread.
 * @param argument: Not used
 * @retval None
@@ -736,63 +736,63 @@ void Power_Check_task(void *argument)
   /* Infinite loop */
   for(;;)
   {
-//		err = osMessageQueueGet (VCU_recv_semp_queueHandle, &len, 0, portMAX_DELAY); //µ÷ÊÔ½×¶ÎÎ´Ê¹ÓÃ£¬ÕýÊ½½×¶Î½«×èÈûÊ±¼äÉèÖÃÎª1000 ÔÝÊ±Ê¹ÓÃ´®¿Ú¶þ
+//		err = osMessageQueueGet (VCU_recv_semp_queueHandle, &len, 0, portMAX_DELAY); //ï¿½ï¿½ï¿½Ô½×¶ï¿½Î´Ê¹ï¿½Ã£ï¿½ï¿½ï¿½Ê½ï¿½×¶Î½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îª1000 ï¿½ï¿½Ê±Ê¹ï¿½Ã´ï¿½ï¿½Ú¶ï¿½
 //		if(err == osOK)
 //		{
-//			/*Èç¹ûµçÁ¿³ä×ã*/
+//			/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 //			if(len <= 100 && len>30)
 //			{
 //				if(run_num != 0) continue;
-//				osEventFlagsSet(Device_Run_status_eventHandle,BIT_0);                 //ÉèÖÃµçÁ¿³ä×ã±êÖ¾Î»
-//				/*´ò¿ªEC600UÉÏµç*/
-//				/*´ò¿ªGPSÉÏµç*/
-//				EC600U_REC_block_time = 1000;                                         //ÅÐ¶Ï4GÄ£¿éÊÇ·ñÉÏµç³¬Ê±
+//				osEventFlagsSet(Device_Run_status_eventHandle,BIT_0);                 //ï¿½ï¿½ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¾Î»
+//				/*ï¿½ï¿½EC600Uï¿½Ïµï¿½*/
+//				/*ï¿½ï¿½GPSï¿½Ïµï¿½*/
+//				EC600U_REC_block_time = 1000;                                         //ï¿½Ð¶ï¿½4GÄ£ï¿½ï¿½ï¿½Ç·ï¿½ï¿½Ïµç³¬Ê±
 //				osMessageQueuePut(usart1_recv_semp_queueHandle,&len,0,10);
 //				run_num = 1;
 //			}
-//			/*Èç¹ûµçÁ¿Ç·¼Ñ*/
+//			/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½*/
 //			else if(len<=30 && len >20)
 //			{
-//				/*Èç¹ûÔÚ¿ª»ú×Ô¼ì½×¶ÎÃ»µç*/
+//				/*ï¿½ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½×¶ï¿½Ã»ï¿½ï¿½*/
 //				if(Device_Run_Status.Curstatus == Poweron)
 //				{
 //					if(run_num != 0) continue;
-//					printf("ÂíÉÏÃ»µçÁË,Æô¶¯µ«²»½¨Òé\r\n");
-//					osEventFlagsSet(Device_Run_status_eventHandle,BIT_0);                 //ÉèÖÃµçÁ¿³ä×ã±êÖ¾Î»
+//					printf("ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\r\n");
+//					osEventFlagsSet(Device_Run_status_eventHandle,BIT_0);                 //ï¿½ï¿½ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¾Î»
 //					
-//					/*´ò¿ªEC600UÉÏµç*/
-//					/*´ò¿ªGPSÉÏµç*/
-//					EC600U_REC_block_time = 1000;                                         //ÅÐ¶Ï4GÄ£¿éÊÇ·ñÉÏµç³¬Ê±
+//					/*ï¿½ï¿½EC600Uï¿½Ïµï¿½*/
+//					/*ï¿½ï¿½GPSï¿½Ïµï¿½*/
+//					EC600U_REC_block_time = 1000;                                         //ï¿½Ð¶ï¿½4GÄ£ï¿½ï¿½ï¿½Ç·ï¿½ï¿½Ïµç³¬Ê±
 //					osMessageQueuePut(usart1_recv_semp_queueHandle,&len,0,10);
 //					run_num = 1;
 //				}
-//				/*ÔÚÕýÔÚ×÷Òµ»òÕß×÷ÒµÍê³É»òÕßÓöµ½ÕÏ°­ÎïÍ£Ö¹µÈÇé¿öÃ»µç£¬ÂíÉÏ·µº½*/
+//				/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òµï¿½ï¿½É»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ï¿½ï¿½Í£Ö¹ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ç£¬ï¿½ï¿½ï¿½Ï·ï¿½ï¿½ï¿½*/
 //				else if(Device_Run_Status.Curstatus == Job_Working || Device_Run_Status.Curstatus == Job_Wait || Device_Run_Status.Curstatus == Job_Block)
 //				{
-//					printf("ÂíÉÏÃ»µçÁË,¿ªÊ¼·µº½\r\n");
-//					/*ÉèÖÃ·µº½×´Ì¬*/
-//					osEventFlagsSet(Device_unusual_status_eventHandle,BIT_1);              //×ª±ä×´Ì¬
+//					printf("ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½\r\n");
+//					/*ï¿½ï¿½ï¿½Ã·ï¿½ï¿½ï¿½×´Ì¬*/
+//					osEventFlagsSet(Device_unusual_status_eventHandle,BIT_1);              //×ªï¿½ï¿½×´Ì¬
 //				}
 //				else if(Device_Run_Status.Curstatus == Job_Return)
 //				{
-//					printf("ÂíÉÏÃ»µçÁË,ÕýÔÚ·µº½\r\n");
+//					printf("ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½Ú·ï¿½ï¿½ï¿½\r\n");
 //				}
-//				else //ÈÎÎñÍê³É ²»×ö´¦Àí
+//				else //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 //				{
 //					
 //				}
 //			}
-//			/*Ã»ÓÐµçÁË½øÐÐÇ¿ÖÆÍ£Ö¹*/
+//			/*Ã»ï¿½Ðµï¿½ï¿½Ë½ï¿½ï¿½ï¿½Ç¿ï¿½ï¿½Í£Ö¹*/
 //			else  
 //			{
-//				osEventFlagsClear(Device_Run_status_eventHandle,BIT_0);                //ÉèÖÃµçÁ¿Ã»µç±êÖ¾Î»
-//				osEventFlagsSet(Device_unusual_status_eventHandle,BIT_0);              //Ç¿ÖÆÍ£Ö¹
+//				osEventFlagsClear(Device_Run_status_eventHandle,BIT_0);                //ï¿½ï¿½ï¿½Ãµï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½Ö¾Î»
+//				osEventFlagsSet(Device_unusual_status_eventHandle,BIT_0);              //Ç¿ï¿½ï¿½Í£Ö¹
 //			}
 //		}
-//		else                                                                      //³¬Ê±ÔòÐû²¼ÎÞµç Ç¿ÖÆÍ£Ö¹
+//		else                                                                      //ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þµï¿½ Ç¿ï¿½ï¿½Í£Ö¹
 //		{
-//			osEventFlagsClear(Device_Run_status_eventHandle,BIT_0);               	//ÉèÖÃµçÁ¿Ã»µç±êÖ¾Î»
-//			osEventFlagsSet(Device_unusual_status_eventHandle,BIT_0);              //Ç¿ÖÆÍ£Ö¹
+//			osEventFlagsClear(Device_Run_status_eventHandle,BIT_0);               	//ï¿½ï¿½ï¿½Ãµï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½Ö¾Î»
+//			osEventFlagsSet(Device_unusual_status_eventHandle,BIT_0);              //Ç¿ï¿½ï¿½Í£Ö¹
 //		}
     osDelay(1000);
   }
@@ -815,7 +815,7 @@ void GPS_REC_task(void *argument)
   /* Infinite loop */
   for(;;)
   {
-		err = osMessageQueueGet (SPI1_recv_semp_queueHandle, &len, 0, GPS_REC_block_time); //µ÷ÊÔ½×¶ÎÎ´Ê¹ÓÃ£¬ÕýÊ½½×¶Î½«×èÈûÊ±¼äÉèÖÃÎª1000
+		err = osMessageQueueGet (SPI1_recv_semp_queueHandle, &len, 0, GPS_REC_block_time); //ï¿½ï¿½ï¿½Ô½×¶ï¿½Î´Ê¹ï¿½Ã£ï¿½ï¿½ï¿½Ê½ï¿½×¶Î½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îª1000
 		if(err == osOK)
 		{
 			if(len != 0)
@@ -830,18 +830,18 @@ void GPS_REC_task(void *argument)
 					SPI1_fifo.usRxRead = 0;
 				}
 			}
-			else  //ËµÃ÷Ö»ÊÇÎªÁËÀ´½â³ý×èÈû£¬ÒÔ´ËÅÐ¶ÏÊÇ·ñ³¬Ê±
-				printf("½â³ý×èÈû\r\n");
+			else  //Ëµï¿½ï¿½Ö»ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô´ï¿½ï¿½Ð¶ï¿½ï¿½Ç·ï¿½Ê±
+				printf("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\r\n");
 		}
 		else
 		{
 //			if(Device_Poweron_status == Check_RTK || Device_Run_Status.Curstatus != Poweron)
 //			{
-				printf("½ÓÊÜRTKÐÅÏ¢Ê§°Ü\r\n");
+				printf("ï¿½ï¿½ï¿½ï¿½RTKï¿½ï¿½Ï¢Ê§ï¿½ï¿½\r\n");
 //				HAL_TIM_Base_Stop_IT(&htim6);
-				osEventFlagsClear(Device_Run_status_eventHandle,BIT_4);                //ÉèÖÃRTKÏûÏ¢¶ªÊ§±êÖ¾
-				osEventFlagsClear(Device_Run_status_eventHandle,BIT_5);                //ÉèÖÃRTKÏûÏ¢¶ªÊ§±êÖ¾
-				osEventFlagsSet(Device_unusual_status_eventHandle,BIT_2);              //´¥·¢Òì³£
+				osEventFlagsClear(Device_Run_status_eventHandle,BIT_4);                //ï¿½ï¿½ï¿½ï¿½RTKï¿½ï¿½Ï¢ï¿½ï¿½Ê§ï¿½ï¿½Ö¾
+				osEventFlagsClear(Device_Run_status_eventHandle,BIT_5);                //ï¿½ï¿½ï¿½ï¿½RTKï¿½ï¿½Ï¢ï¿½ï¿½Ê§ï¿½ï¿½Ö¾
+				osEventFlagsSet(Device_unusual_status_eventHandle,BIT_2);              //ï¿½ï¿½ï¿½ï¿½ï¿½ì³£
 //			}
 		}
 //    osDelay(1);
@@ -875,11 +875,11 @@ void VCU_send_task(void *argument)
 //			}
 //			osDelay(20);
 //		}
-		/* ²éÑ¯Ê½ can·¢ËÍ*/
+		/* ï¿½ï¿½Ñ¯Ê½ canï¿½ï¿½ï¿½ï¿½*/
 		err = osSemaphoreAcquire (CAN_send_sempHandle, 25);
 		if(err == osOK)
 		{
-			/* ·¢ËÍÐÅÏ¢ */
+			/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ */
 			can_SendPacket(CAN1TxData[CAN1_fifo.usTxRead],DRIVEID);
 			memset(CAN1TxData[CAN1_fifo.usTxRead],0,8);
 			if (++CAN1_fifo.usTxRead >= CAN1_fifo.usTxBufSize)
@@ -895,12 +895,12 @@ void VCU_send_task(void *argument)
 			osDelay(3);
 			can_SendPacket((uint8_t *)Msg.R_Msg,DRIVEID);
 		}
-		//ÏÂÃæÕâÖÖ·½·¨²»¿ÉÓÃ
-		//½øÈëÁÙ½çÇø
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		//ï¿½ï¿½ï¿½ï¿½ï¿½Ù½ï¿½ï¿½ï¿½
 //		taskENTER_CRITICAL();
 //		if(CAN1_fifo.usTxLen > 0)
 //		{
-//			/* ·¢ËÍÐÅÏ¢ */
+//			/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ */
 //			can_SendPacket(CAN1TxData[CAN1_fifo.usTxRead],DRIVEID);
 //			memset(CAN1TxData[CAN1_fifo.usTxRead],0,8);
 //			if (++CAN1_fifo.usTxRead >= CAN1_fifo.usTxBufSize)
@@ -916,7 +916,7 @@ void VCU_send_task(void *argument)
 //			can_SendPacket((uint8_t *)Direct_Drive_motor(0, 0).R_Msg,DRIVEID);
 //			osDelay(25);
 //		}
-//		/*ÍË³öÁÙ½çÇø*/
+//		/*ï¿½Ë³ï¿½ï¿½Ù½ï¿½ï¿½ï¿½*/
 //		taskEXIT_CRITICAL();
   }
   /* USER CODE END VCU_send_task */
@@ -934,7 +934,7 @@ void VCU_REC_task(void *argument)
   /* USER CODE BEGIN VCU_REC_task */
 	osStatus_t err;
 	uint16_t Recv_Len;
-	//¿ªÆô´®¿Ú¿ÕÏÐDMA¿ÕÏÐÖÐ¶Ï
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½DMAï¿½ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½
 	HAL_UARTEx_ReceiveToIdle_DMA(&huart2, USART2RxData[UART2_fifo.usRxWrite],USART2_Max_Rxbuf_size);
   /* Infinite loop */
   for(;;)
@@ -942,7 +942,7 @@ void VCU_REC_task(void *argument)
 		err = osMessageQueueGet (VCU_recv_semp_queueHandle, &Recv_Len, 0, portMAX_DELAY);
 		if(err == osOK)
 		{
-			if(Recv_Len != 0) //ËµÃ÷´®¿Ú·¢ËÍÀ´µÄÊý¾Ý
+			if(Recv_Len != 0) //Ëµï¿½ï¿½ï¿½ï¿½ï¿½Ú·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			{
 				printf("%s   %d\r\n",USART2RxData[UART2_fifo.usRxRead],Recv_Len);
 //				usart2_rec_data_apply(USART2RxData[UART2_fifo.usRxRead],Recv_Len);
@@ -953,10 +953,10 @@ void VCU_REC_task(void *argument)
 					UART2_fifo.usRxRead = 0;
 				}
 			}
-			else  //ËµÃ÷Ö»ÊÇÎªÁËÀ´½â³ý×èÈû£¬ÒÔ´ËÅÐ¶ÏÊÇ·ñ³¬Ê±
-				printf("½â³ý×èÈû\r\n");
+			else  //Ëµï¿½ï¿½Ö»ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô´ï¿½ï¿½Ð¶ï¿½ï¿½Ç·ï¿½Ê±
+				printf("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\r\n");
 		}
-		else //³¬Ê±´¦Àí
+		else //ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½
 		{
 			
 		}
@@ -983,7 +983,7 @@ void SBUS_Parse_task(void *argument)
 		err = osMessageQueueGet (usart3_recv_semp_queueHandle, &Recv_Len, 0, portMAX_DELAY);
 		if(err == osOK)
 		{
-//			printf("%x\r\n",USART3RxData[UART3_fifo.usRxRead]); //µ÷ÊÔÊ¹ÓÃ
+//			printf("%x\r\n",USART3RxData[UART3_fifo.usRxRead]); //ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½
 			
 			sbus_parse(USART3RxData[UART3_fifo.usRxRead],Recv_Len);
 			
@@ -996,7 +996,7 @@ void SBUS_Parse_task(void *argument)
 		else
 		{
 			SBUS_CH.Start = 0;
-			printf("SBUSÐÅºÅ¶ªÊ§\r\n");
+			printf("SBUSï¿½ÅºÅ¶ï¿½Ê§\r\n");
 		}
   }
   /* USER CODE END SBUS_Parse_task */

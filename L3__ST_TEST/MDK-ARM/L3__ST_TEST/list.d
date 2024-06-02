@@ -1,8 +1,8 @@
 l3__st_test\list.o: ../Middlewares/Third_Party/FreeRTOS/Source/list.c
-l3__st_test\list.o: E:\keil5\IDE\ARM\ARMCC\Bin\..\include\stdlib.h
+l3__st_test\list.o: D:\Software\Keil_v5\software\ARM\ARMCC\Bin\..\include\stdlib.h
 l3__st_test\list.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
-l3__st_test\list.o: E:\keil5\IDE\ARM\ARMCC\Bin\..\include\stddef.h
-l3__st_test\list.o: E:\keil5\IDE\ARM\ARMCC\Bin\..\include\stdint.h
+l3__st_test\list.o: D:\Software\Keil_v5\software\ARM\ARMCC\Bin\..\include\stddef.h
+l3__st_test\list.o: D:\Software\Keil_v5\software\ARM\ARMCC\Bin\..\include\stdint.h
 l3__st_test\list.o: ../Core/Inc/FreeRTOSConfig.h
 l3__st_test\list.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
 l3__st_test\list.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
